@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calvin's Study Site</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="site-logo">Calvin's <span>Study Site</span> 📚</div>
+      <nav class="nav-links">
+        <a href="math.html"          class="nav-link math">🔢 Math</a>
+        <a href="ela.html"           class="nav-link ela">📖 ELA</a>
+        <a href="science.html"       class="nav-link sci">🔬 Science</a>
+        <a href="social-studies.html" class="nav-link ss">🌍 Social Studies</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Hi Calvin! 👋</h1>
+    <p>Pick a subject to study, or jump straight into a practice test. You've got this!</p>
+  </section>
+
+  <!-- Subject Cards -->
+  <main class="container">
+    <div class="subjects-grid">
+
+      <!-- Math -->
+      <div class="subject-card math">
+        <div class="card-icon">🔢</div>
+        <div>
+          <div class="card-title">Math</div>
+          <div class="card-subtitle">Numbers, Geometry, Data &amp; More</div>
+        </div>
+        <span class="best-score" id="best-math">Loading…</span>
+        <div class="card-buttons">
+          <a href="math.html" class="btn btn-outline">Study</a>
+          <a href="quiz.html?subject=math&topic=all" class="btn btn-primary">Take a Test</a>
+        </div>
+      </div>
+
+      <!-- ELA -->
+      <div class="subject-card ela">
+        <div class="card-icon">📖</div>
+        <div>
+          <div class="card-title">ELA</div>
+          <div class="card-subtitle">Reading, Writing &amp; Language</div>
+        </div>
+        <span class="best-score" id="best-ela">Loading…</span>
+        <div class="card-buttons">
+          <a href="ela.html" class="btn btn-outline">Study</a>
+          <a href="quiz.html?subject=ela&topic=all" class="btn btn-primary">Take a Test</a>
+        </div>
+      </div>
+
+      <!-- Science -->
+      <div class="subject-card sci">
+        <div class="card-icon">🔬</div>
+        <div>
+          <div class="card-title">Science</div>
+          <div class="card-subtitle">Life, Earth &amp; Physical Science</div>
+        </div>
+        <span class="best-score" id="best-science">Loading…</span>
+        <div class="card-buttons">
+          <a href="science.html" class="btn btn-outline">Study</a>
+          <a href="quiz.html?subject=science&topic=all" class="btn btn-primary">Take a Test</a>
+        </div>
+      </div>
+
+      <!-- Social Studies -->
+      <div class="subject-card ss">
+        <div class="card-icon">🌍</div>
+        <div>
+          <div class="card-title">Social Studies</div>
+          <div class="card-subtitle">History, Geography, Civics &amp; More</div>
+        </div>
+        <span class="best-score" id="best-social-studies">Loading…</span>
+        <div class="card-buttons">
+          <a href="social-studies.html" class="btn btn-outline">Study</a>
+          <a href="quiz.html?subject=social-studies&topic=all" class="btn btn-primary">Take a Test</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Recent History -->
+    <div class="mb-24">
+      <div class="section-title">Recent Tests</div>
+      <div id="history-container">
+        <div class="spinner"></div>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { loadHistory, loadBestScores } from "./js/firebase-config.js";
+
+    // ── Best Scores ──────────────────────────────────────────────────────
+    async function renderBestScores() {
+      try {
+        const best = await loadBestScores();
+        const subjects = ["math", "ela", "science", "social-studies"];
+        for (const s of subjects) {
+          const el = document.getElementById("best-" + s);
+          if (!el) continue;
+          if (best[s]) {
+            el.textContent = "Best: " + best[s].pct + "%";
+          } else {
+            el.textContent = "Not yet taken";
+          }
+        }
+      } catch (err) {
+        console.error("Could not load best scores:", err);
+        document.querySelectorAll(".best-score").forEach(el => {
+          el.textContent = "—";
+        });
+      }
+    }
+
+    // ── History Table ────────────────────────────────────────────────────
+    const SUBJECT_LABELS = {
+      math:            "Math",
+      ela:             "ELA",
+      science:         "Science",
+      "social-studies": "Social Studies",
+    };
+
+    function pctClass(pct) {
+      if (pct >= 80) return "pct-great";
+      if (pct >= 60) return "pct-good";
+      return "pct-low";
+    }
+
+    function pillClass(subject) {
+      const map = { math: "pill-math", ela: "pill-ela", science: "pill-sci", "social-studies": "pill-ss" };
+      return map[subject] || "";
+    }
+
+    function formatDate(ts) {
+      if (!ts) return "—";
+      const d = ts.toDate ? ts.toDate() : new Date(ts);
+      return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+    }
+
+    async function renderHistory() {
+      const container = document.getElementById("history-container");
+      try {
+        const rows = await loadHistory(10);
+        if (rows.length === 0) {
+          container.innerHTML = `
+            <div class="empty-state">
+              <div class="big">📋</div>
+              <p>No tests yet — take one and see your scores here!</p>
+            </div>`;
+          return;
+        }
+
+        const tableRows = rows.map(r => `
+          <tr>
+            <td><span class="subject-pill ${pillClass(r.subject)}">${SUBJECT_LABELS[r.subject] || r.subject}</span></td>
+            <td>${r.topic === "all" ? "Full Test" : r.topic}</td>
+            <td>${r.score} / ${r.total}</td>
+            <td><span class="pct-badge ${pctClass(r.pct)}">${r.pct}%</span></td>
+            <td class="text-muted">${formatDate(r.timestamp)}</td>
+          </tr>`).join("");
+
+        container.innerHTML = `
+          <table class="history-table">
+            <thead>
+              <tr>
+                <th>Subject</th>
+                <th>Topic</th>
+                <th>Score</th>
+                <th>Percent</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>${tableRows}</tbody>
+          </table>`;
+      } catch (err) {
+        console.error("Could not load history:", err);
+        container.innerHTML = `<p class="text-muted text-center mt-16">Could not load history.</p>`;
+      }
+    }
+
+    renderBestScores();
+    renderHistory();
+  </script>
+
+</body>
+</html>

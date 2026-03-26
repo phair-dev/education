@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ELA — Calvin's Study Site</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="site-logo">Calvin's <span>Study Site</span> 📚</a>
+      <nav class="nav-links">
+        <a href="math.html"           class="nav-link math">🔢 Math</a>
+        <a href="ela.html"            class="nav-link ela active">📖 ELA</a>
+        <a href="science.html"        class="nav-link sci">🔬 Science</a>
+        <a href="social-studies.html" class="nav-link ss">🌍 Social Studies</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <div class="subject-hero">
+      <div class="big-icon">📖</div>
+      <div>
+        <h1 style="color: var(--ela);">ELA</h1>
+        <p>3rd Grade TEKS — Reading, Writing, Language &amp; Research</p>
+      </div>
+    </div>
+
+    <div class="subject-layout">
+
+      <div class="topic-list">
+
+        <!-- Speaking and Listening -->
+        <div class="topic-card open">
+          <div class="topic-header" onclick="toggleTopic(this)">
+            <span>🎤 Speaking and Listening</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="topic-body">
+            <ul class="topic-skills">
+              <li>Listen attentively and ask relevant questions to clarify understanding</li>
+              <li>Follow three- and four-step oral directions</li>
+              <li>Speak in complete sentences and use appropriate vocabulary</li>
+              <li>Retell a story or information heard, including main idea and details</li>
+              <li>Make eye contact, use appropriate volume, and speak clearly</li>
+            </ul>
+            <div class="resource-links">
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+speaking+listening+skills" class="resource-link" target="_blank">▶ YouTube — Speaking &amp; Listening</a>
+            </div>
+            <a href="quiz.html?subject=ela&topic=Speaking+and+Listening" class="btn btn-ela btn-sm topic-quiz-btn">Practice This Topic →</a>
+          </div>
+        </div>
+
+        <!-- Reading Skills -->
+        <div class="topic-card">
+          <div class="topic-header" onclick="toggleTopic(this)">
+            <span>🔤 Reading Skills</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="topic-body">
+            <ul class="topic-skills">
+              <li>Identify and use prefixes (un-, re-, pre-, mis-, dis-) and suffixes (-ful, -less, -ness, -tion)</li>
+              <li>Use context clues to determine word meanings</li>
+              <li>Identify synonyms, antonyms, and multiple-meaning words</li>
+              <li>Decode multisyllabic words; identify syllable patterns</li>
+              <li>Use alphabetical order to the third letter</li>
+              <li>Identify long and short vowel sounds and vowel patterns</li>
+              <li>Use a dictionary or glossary to find word meanings and pronunciations</li>
+            </ul>
+            <div class="resource-links">
+              <a href="https://www.khanacademy.org/ela/cc-3rd-grade-reading" class="resource-link" target="_blank">📘 Khan Academy — 3rd Grade ELA</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+prefixes+suffixes+TEKS" class="resource-link" target="_blank">▶ YouTube — Prefixes &amp; Suffixes</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+context+clues+vocabulary" class="resource-link" target="_blank">▶ YouTube — Context Clues</a>
+            </div>
+            <a href="quiz.html?subject=ela&topic=Reading+Skills" class="btn btn-ela btn-sm topic-quiz-btn">Practice This Topic →</a>
+          </div>
+        </div>
+
+        <!-- Reading Comprehension -->
+        <div class="topic-card">
+          <div class="topic-header" onclick="toggleTopic(this)">
+            <span>📚 Reading Comprehension</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="topic-body">
+            <ul class="topic-skills">
+              <li>Identify the main idea and supporting details in a text</li>
+              <li>Make inferences using text evidence and prior knowledge</li>
+              <li>Identify cause and effect relationships</li>
+              <li>Compare and contrast within and across texts</li>
+              <li>Identify the theme or moral of a story</li>
+              <li>Identify point of view (first person, third person)</li>
+              <li>Recognize literary elements: plot, character, setting, conflict, resolution</li>
+              <li>Identify figurative language: simile, metaphor, alliteration, idiom</li>
+              <li>Distinguish fiction, nonfiction, poetry, and drama</li>
+              <li>Identify sequence of events in a text</li>
+            </ul>
+            <div class="resource-links">
+              <a href="https://www.khanacademy.org/ela/cc-3rd-grade-reading/cc-3rd-reading-informational-text" class="resource-link" target="_blank">📘 Khan Academy — Informational Text</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+main+idea+details+TEKS" class="resource-link" target="_blank">▶ YouTube — Main Idea &amp; Details</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+figurative+language+simile+metaphor" class="resource-link" target="_blank">▶ YouTube — Figurative Language</a>
+            </div>
+            <a href="quiz.html?subject=ela&topic=Reading+Comprehension" class="btn btn-ela btn-sm topic-quiz-btn">Practice This Topic →</a>
+          </div>
+        </div>
+
+        <!-- Writing and Research -->
+        <div class="topic-card">
+          <div class="topic-header" onclick="toggleTopic(this)">
+            <span>✏️ Writing and Research</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="topic-body">
+            <ul class="topic-skills">
+              <li>Write complete sentences with correct capitalization and punctuation</li>
+              <li>Combine short sentences into longer ones using conjunctions</li>
+              <li>Identify and correct run-on sentences and sentence fragments</li>
+              <li>Write personal narratives, expository, and persuasive texts</li>
+              <li>Use the writing process: prewrite, draft, revise, edit, publish</li>
+              <li>Write a topic sentence and supporting details in a paragraph</li>
+              <li>Use primary and secondary sources for research</li>
+              <li>Create a research plan and take notes from sources</li>
+              <li>Avoid plagiarism; use your own words</li>
+            </ul>
+            <div class="resource-links">
+              <a href="https://www.khanacademy.org/ela/cc-3rd-grade-reading/cc-3rd-reading-informational-text" class="resource-link" target="_blank">📘 Khan Academy — 3rd Grade Writing</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+writing+process+TEKS" class="resource-link" target="_blank">▶ YouTube — Writing Process</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+paragraph+writing+topic+sentence" class="resource-link" target="_blank">▶ YouTube — Paragraph Writing</a>
+            </div>
+            <a href="quiz.html?subject=ela&topic=Writing+and+Research" class="btn btn-ela btn-sm topic-quiz-btn">Practice This Topic →</a>
+          </div>
+        </div>
+
+      </div><!-- /.topic-list -->
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <h3>🎯 Practice Tests</h3>
+          <div class="sidebar-btn-list">
+            <a href="quiz.html?subject=ela&topic=all&count=20" class="btn btn-ela">Full Practice Test (20 Q)</a>
+            <a href="quiz.html?subject=ela&topic=all&count=10" class="btn btn-ela btn-sm">Quick Quiz (10 Q)</a>
+          </div>
+        </div>
+        <div class="sidebar-card">
+          <h3>📌 Practice by Topic</h3>
+          <div class="sidebar-btn-list">
+            <a href="quiz.html?subject=ela&topic=Speaking+and+Listening"  class="btn btn-outline btn-sm" style="border-color:var(--ela);color:var(--ela);">Speaking &amp; Listening</a>
+            <a href="quiz.html?subject=ela&topic=Reading+Skills"          class="btn btn-outline btn-sm" style="border-color:var(--ela);color:var(--ela);">Reading Skills</a>
+            <a href="quiz.html?subject=ela&topic=Reading+Comprehension"   class="btn btn-outline btn-sm" style="border-color:var(--ela);color:var(--ela);">Reading Comprehension</a>
+            <a href="quiz.html?subject=ela&topic=Writing+and+Research"    class="btn btn-outline btn-sm" style="border-color:var(--ela);color:var(--ela);">Writing &amp; Research</a>
+          </div>
+        </div>
+        <div class="sidebar-card">
+          <h3>📚 More Resources</h3>
+          <div class="sidebar-btn-list">
+            <a href="https://www.khanacademy.org/ela/cc-3rd-grade-reading" class="btn btn-gray btn-sm" target="_blank">Khan Academy ELA</a>
+            <a href="https://www.youtube.com/results?search_query=3rd+grade+ELA+TEKS+Texas+reading" class="btn btn-gray btn-sm" target="_blank">YouTube — 3rd Grade ELA</a>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <script>
+    function toggleTopic(header) {
+      const card = header.closest(".topic-card");
+      card.classList.toggle("open");
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Math — Calvin's Study Site</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="site-logo">Calvin's <span>Study Site</span> 📚</a>
+      <nav class="nav-links">
+        <a href="math.html"           class="nav-link math active">🔢 Math</a>
+        <a href="ela.html"            class="nav-link ela">📖 ELA</a>
+        <a href="science.html"        class="nav-link sci">🔬 Science</a>
+        <a href="social-studies.html" class="nav-link ss">🌍 Social Studies</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Hero -->
+    <div class="subject-hero">
+      <div class="big-icon">🔢</div>
+      <div>
+        <h1 style="color: var(--math);">Math</h1>
+        <p>3rd Grade TEKS — Numbers, Algebra, Geometry, Data &amp; Finance</p>
+      </div>
+    </div>
+
+    <div class="subject-layout">
+
+      <!-- Topic Accordion -->
+      <div class="topic-list">
+
+        <!-- Numbers and Operations -->
+        <div class="topic-card open">
+          <div class="topic-header" onclick="toggleTopic(this)">
+            <span>🔢 Numbers and Operations</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="topic-body">
+            <ul class="topic-skills">
+              <li>Count, read, and write whole numbers through 100,000</li>
+              <li>Compare and order numbers using &lt;, &gt;, and =</li>
+              <li>Round numbers to the nearest 10 or 100</li>
+              <li>Add and subtract numbers up to 1,000</li>
+              <li>Multiply one-digit numbers (0–12) using multiplication tables</li>
+              <li>Divide using basic facts and understand the relationship to multiplication</li>
+              <li>Understand fractions — halves, thirds, fourths, sixths, eighths</li>
+              <li>Place fractions on a number line</li>
+              <li>Identify equivalent fractions</li>
+            </ul>
+            <div class="resource-links">
+              <a href="https://www.khanacademy.org/math/cc-third-grade-math" class="resource-link" target="_blank">📘 Khan Academy — 3rd Grade Math</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+multiplication+tables+TEKS" class="resource-link" target="_blank">▶ YouTube — Multiplication Tables</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+fractions+number+line" class="resource-link" target="_blank">▶ YouTube — Fractions</a>
+            </div>
+            <a href="quiz.html?subject=math&topic=Numbers+and+Operations" class="btn btn-math btn-sm topic-quiz-btn">Practice This Topic →</a>
+          </div>
+        </div>
+
+        <!-- Algebraic Reasoning -->
+        <div class="topic-card">
+          <div class="topic-header" onclick="toggleTopic(this)">
+            <span>➕ Algebraic Reasoning</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="topic-body">
+            <ul class="topic-skills">
+              <li>Identify patterns in number sequences (skip counting by 2s, 5s, 10s, 100s)</li>
+              <li>Solve one-step addition, subtraction, multiplication, and division equations</li>
+              <li>Use properties of operations: commutative, associative, distributive</li>
+              <li>Identify a rule for a pattern and extend it</li>
+              <li>Understand the meaning of an unknown (variable) in an equation</li>
+            </ul>
+            <div class="resource-links">
+              <a href="https://www.khanacademy.org/math/cc-third-grade-math/cc-3rd-algebraic-thinking" class="resource-link" target="_blank">📘 Khan Academy — Algebraic Thinking</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+patterns+algebra+TEKS" class="resource-link" target="_blank">▶ YouTube — Patterns &amp; Equations</a>
+            </div>
+            <a href="quiz.html?subject=math&topic=Algebraic+Reasoning" class="btn btn-math btn-sm topic-quiz-btn">Practice This Topic →</a>
+          </div>
+        </div>
+
+        <!-- Geometry and Measurement -->
+        <div class="topic-card">
+          <div class="topic-header" onclick="toggleTopic(this)">
+            <span>📐 Geometry and Measurement</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="topic-body">
+            <ul class="topic-skills">
+              <li>Identify 2D shapes: triangle, quadrilateral, pentagon, hexagon, polygon</li>
+              <li>Identify 3D figures: sphere, cone, cylinder, rectangular prism</li>
+              <li>Measure length using customary (inches, feet) and metric (cm, m) units</li>
+              <li>Measure perimeter of polygons</li>
+              <li>Determine area by counting unit squares</li>
+              <li>Tell time to the nearest minute; calculate elapsed time</li>
+              <li>Measure liquid volume using cups, pints, quarts, gallons and liters</li>
+              <li>Measure temperature in Fahrenheit and Celsius</li>
+            </ul>
+            <div class="resource-links">
+              <a href="https://www.khanacademy.org/math/cc-third-grade-math/cc-3rd-geometry" class="resource-link" target="_blank">📘 Khan Academy — Geometry</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+perimeter+area+TEKS" class="resource-link" target="_blank">▶ YouTube — Perimeter &amp; Area</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+elapsed+time+clock" class="resource-link" target="_blank">▶ YouTube — Elapsed Time</a>
+            </div>
+            <a href="quiz.html?subject=math&topic=Geometry+and+Measurement" class="btn btn-math btn-sm topic-quiz-btn">Practice This Topic →</a>
+          </div>
+        </div>
+
+        <!-- Data Analysis -->
+        <div class="topic-card">
+          <div class="topic-header" onclick="toggleTopic(this)">
+            <span>📊 Data Analysis</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="topic-body">
+            <ul class="topic-skills">
+              <li>Read and interpret bar graphs, pictographs, and dot plots (frequency tables)</li>
+              <li>Summarize data sets with frequency tables</li>
+              <li>Use data to answer questions and draw conclusions</li>
+              <li>Create and interpret tables</li>
+            </ul>
+            <div class="resource-links">
+              <a href="https://www.khanacademy.org/math/cc-third-grade-math/cc-3rd-data" class="resource-link" target="_blank">📘 Khan Academy — Data</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+bar+graph+pictograph+TEKS" class="resource-link" target="_blank">▶ YouTube — Reading Graphs</a>
+            </div>
+            <a href="quiz.html?subject=math&topic=Data+Analysis" class="btn btn-math btn-sm topic-quiz-btn">Practice This Topic →</a>
+          </div>
+        </div>
+
+        <!-- Personal Financial Literacy -->
+        <div class="topic-card">
+          <div class="topic-header" onclick="toggleTopic(this)">
+            <span>💰 Personal Financial Literacy</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="topic-body">
+            <ul class="topic-skills">
+              <li>Describe the relationship between earning, spending, saving, and donating</li>
+              <li>Create a simple budget</li>
+              <li>Explain the difference between a fixed and variable expense</li>
+              <li>Calculate simple profit and loss</li>
+              <li>Understand the costs and benefits of borrowing</li>
+            </ul>
+            <div class="resource-links">
+              <a href="https://www.khanacademy.org/college-careers-more/financial-literacy" class="resource-link" target="_blank">📘 Khan Academy — Financial Literacy</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+personal+financial+literacy+TEKS+budget" class="resource-link" target="_blank">▶ YouTube — Money &amp; Budgets</a>
+            </div>
+            <a href="quiz.html?subject=math&topic=Personal+Financial+Literacy" class="btn btn-math btn-sm topic-quiz-btn">Practice This Topic →</a>
+          </div>
+        </div>
+
+      </div><!-- /.topic-list -->
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <h3>🎯 Practice Tests</h3>
+          <div class="sidebar-btn-list">
+            <a href="quiz.html?subject=math&topic=all&count=20" class="btn btn-math">Full Practice Test (20 Q)</a>
+            <a href="quiz.html?subject=math&topic=all&count=10" class="btn btn-math btn-sm">Quick Quiz (10 Q)</a>
+          </div>
+        </div>
+        <div class="sidebar-card">
+          <h3>📌 Practice by Topic</h3>
+          <div class="sidebar-btn-list">
+            <a href="quiz.html?subject=math&topic=Numbers+and+Operations"   class="btn btn-outline btn-sm" style="border-color:var(--math);color:var(--math);">Numbers &amp; Operations</a>
+            <a href="quiz.html?subject=math&topic=Algebraic+Reasoning"       class="btn btn-outline btn-sm" style="border-color:var(--math);color:var(--math);">Algebraic Reasoning</a>
+            <a href="quiz.html?subject=math&topic=Geometry+and+Measurement"  class="btn btn-outline btn-sm" style="border-color:var(--math);color:var(--math);">Geometry &amp; Measurement</a>
+            <a href="quiz.html?subject=math&topic=Data+Analysis"             class="btn btn-outline btn-sm" style="border-color:var(--math);color:var(--math);">Data Analysis</a>
+            <a href="quiz.html?subject=math&topic=Personal+Financial+Literacy" class="btn btn-outline btn-sm" style="border-color:var(--math);color:var(--math);">Financial Literacy</a>
+          </div>
+        </div>
+        <div class="sidebar-card">
+          <h3>📚 More Resources</h3>
+          <div class="sidebar-btn-list">
+            <a href="https://www.khanacademy.org/math/cc-third-grade-math" class="btn btn-gray btn-sm" target="_blank">Khan Academy</a>
+            <a href="https://www.youtube.com/results?search_query=3rd+grade+math+TEKS+Texas" class="btn btn-gray btn-sm" target="_blank">YouTube — 3rd Grade Math</a>
+          </div>
+        </div>
+      </aside>
+
+    </div><!-- /.subject-layout -->
+  </main>
+
+  <script>
+    function toggleTopic(header) {
+      const card = header.closest(".topic-card");
+      card.classList.toggle("open");
+    }
+  </script>
+
+</body>
+</html>

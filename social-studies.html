@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Social Studies — Calvin's Study Site</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="site-logo">Calvin's <span>Study Site</span> 📚</a>
+      <nav class="nav-links">
+        <a href="math.html"           class="nav-link math">🔢 Math</a>
+        <a href="ela.html"            class="nav-link ela">📖 ELA</a>
+        <a href="science.html"        class="nav-link sci">🔬 Science</a>
+        <a href="social-studies.html" class="nav-link ss active">🌍 Social Studies</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <div class="subject-hero">
+      <div class="big-icon">🌍</div>
+      <div>
+        <h1 style="color: var(--ss);">Social Studies</h1>
+        <p>3rd Grade TEKS — History, Geography, Economics, Government &amp; More</p>
+      </div>
+    </div>
+
+    <div class="subject-layout">
+
+      <div class="topic-list">
+
+        <!-- History -->
+        <div class="topic-card open">
+          <div class="topic-header" onclick="toggleTopic(this)">
+            <span>🏛️ History</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="topic-body">
+            <ul class="topic-skills">
+              <li>Identify key historical figures: Pierre-Charles L'Enfant, Benjamin Banneker, Benjamin Franklin</li>
+              <li>Know explorers and founders: Daniel Boone, Christopher Columbus, Juan de Oñate, Founding Fathers</li>
+              <li>Describe why people form communities (security, religion, education, well-being)</li>
+              <li>Use chronology vocabulary: past, present, future; year, decade (10 years), century (100 years)</li>
+              <li>Read and create timelines; sequence historical events</li>
+            </ul>
+            <div class="resource-links">
+              <a href="https://www.khanacademy.org/humanities/us-history/colonial-america" class="resource-link" target="_blank">📘 Khan Academy — Colonial America</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+history+TEKS+Texas+communities" class="resource-link" target="_blank">▶ YouTube — Community History</a>
+              <a href="https://www.youtube.com/results?search_query=Benjamin+Franklin+kids+biography" class="resource-link" target="_blank">▶ YouTube — Benjamin Franklin</a>
+            </div>
+            <a href="quiz.html?subject=social-studies&topic=History" class="btn btn-ss btn-sm topic-quiz-btn">Practice This Topic →</a>
+          </div>
+        </div>
+
+        <!-- Geography -->
+        <div class="topic-card">
+          <div class="topic-header" onclick="toggleTopic(this)">
+            <span>🗺️ Geography</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="topic-body">
+            <ul class="topic-skills">
+              <li>Identify physical features: climate, landforms (mountains, plains, valleys, deltas), natural resources, natural hazards</li>
+              <li>Explain how people adapt to or modify their environment (deserts, mountains, wetlands, plains)</li>
+              <li>Describe effects of physical processes: volcanoes, hurricanes, earthquakes</li>
+              <li>Describe effects of human processes: building homes, conservation, pollution</li>
+              <li>Use cardinal (N/S/E/W) and intermediate (NE/SW, etc.) directions</li>
+              <li>Use a map scale to calculate distance</li>
+              <li>Read map elements: title, compass rose, legend, scale, grid system</li>
+            </ul>
+            <div class="resource-links">
+              <a href="https://www.khanacademy.org/humanities/ap-us-history/period-1/apush-new-world-beginnings/a/what-is-geography" class="resource-link" target="_blank">📘 Khan Academy — Geography</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+map+skills+compass+rose+TEKS" class="resource-link" target="_blank">▶ YouTube — Map Skills</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+landforms+physical+features" class="resource-link" target="_blank">▶ YouTube — Landforms</a>
+            </div>
+            <a href="quiz.html?subject=social-studies&topic=Geography" class="btn btn-ss btn-sm topic-quiz-btn">Practice This Topic →</a>
+          </div>
+        </div>
+
+        <!-- Economics -->
+        <div class="topic-card">
+          <div class="topic-header" onclick="toggleTopic(this)">
+            <span>💵 Economics</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="topic-body">
+            <ul class="topic-skills">
+              <li>Identify ways of earning, spending, saving, and donating money</li>
+              <li>Create a simple budget</li>
+              <li>Define scarcity — not enough resources to meet all wants and needs</li>
+              <li>Explain supply and demand — when supply drops, prices rise</li>
+              <li>Explain the U.S. free enterprise system</li>
+              <li>Understand how production costs affect profit</li>
+              <li>Identify business entrepreneurs: Henry Ford, Sam Walton, Milton Hershey, Mary Kay Ash</li>
+            </ul>
+            <div class="resource-links">
+              <a href="https://www.khanacademy.org/economics-finance-domain/microeconomics/supply-demand-equilibrium" class="resource-link" target="_blank">📘 Khan Academy — Supply &amp; Demand</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+economics+scarcity+TEKS" class="resource-link" target="_blank">▶ YouTube — Economics for Kids</a>
+            </div>
+            <a href="quiz.html?subject=social-studies&topic=Economics" class="btn btn-ss btn-sm topic-quiz-btn">Practice This Topic →</a>
+          </div>
+        </div>
+
+        <!-- Government -->
+        <div class="topic-card">
+          <div class="topic-header" onclick="toggleTopic(this)">
+            <span>🏛️ Government</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="topic-body">
+            <ul class="topic-skills">
+              <li>Describe local, state, and national government structure</li>
+              <li>Identify how government officials are chosen (elections)</li>
+              <li>Identify government services: schools, police, fire, roads</li>
+              <li>Explain how government services are financed (taxes)</li>
+              <li>Know the purpose of the Declaration of Independence and U.S. Constitution</li>
+              <li>Understand the Bill of Rights — protects citizens' basic freedoms</li>
+              <li>Explain "consent of the governed" — government gets its power from the people</li>
+            </ul>
+            <div class="resource-links">
+              <a href="https://www.khanacademy.org/humanities/us-government-and-civics" class="resource-link" target="_blank">📘 Khan Academy — U.S. Government</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+government+constitution+bill+of+rights+kids" class="resource-link" target="_blank">▶ YouTube — Government for Kids</a>
+            </div>
+            <a href="quiz.html?subject=social-studies&topic=Government" class="btn btn-ss btn-sm topic-quiz-btn">Practice This Topic →</a>
+          </div>
+        </div>
+
+        <!-- Citizenship -->
+        <div class="topic-card">
+          <div class="topic-header" onclick="toggleTopic(this)">
+            <span>🗳️ Citizenship</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="topic-body">
+            <ul class="topic-skills">
+              <li>Identify characteristics of good citizenship: truthfulness, justice, equality, respect, responsibility</li>
+              <li>Know civic heroes: Helen Keller, Clara Barton, Ruby Bridges, military &amp; first responders</li>
+              <li>Identify civic responsibilities: obeying laws, serving the community, voting, jury duty</li>
+              <li>Explain how individual or group decisions can improve a community</li>
+              <li>Understand nonprofit organizations like the Red Cross and how they help</li>
+            </ul>
+            <div class="resource-links">
+              <a href="https://www.khanacademy.org/humanities/us-government-and-civics/us-gov-foundations/us-gov-civic-participation" class="resource-link" target="_blank">📘 Khan Academy — Civic Participation</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+good+citizenship+civic+responsibility" class="resource-link" target="_blank">▶ YouTube — Good Citizenship</a>
+            </div>
+            <a href="quiz.html?subject=social-studies&topic=Citizenship" class="btn btn-ss btn-sm topic-quiz-btn">Practice This Topic →</a>
+          </div>
+        </div>
+
+        <!-- Culture -->
+        <div class="topic-card">
+          <div class="topic-header" onclick="toggleTopic(this)">
+            <span>🎭 Culture</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="topic-body">
+            <ul class="topic-skills">
+              <li>Explain the significance of cultural celebrations in different communities</li>
+              <li>Know state and national heroes: Hector P. Garcia, James A. Lovell, Ellen Ochoa, Todd Beamer</li>
+              <li>Know historical heroes: Harriet Tubman, Juliette Gordon Low</li>
+              <li>Identify writers and artists: Laura Ingalls Wilder, Kadir Nelson, Phillis Wheatley, Carmen Lomas Garza</li>
+            </ul>
+            <div class="resource-links">
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+social+studies+culture+heroes+TEKS" class="resource-link" target="_blank">▶ YouTube — Culture &amp; Heroes</a>
+              <a href="https://www.youtube.com/results?search_query=Harriet+Tubman+kids+biography" class="resource-link" target="_blank">▶ YouTube — Harriet Tubman</a>
+            </div>
+            <a href="quiz.html?subject=social-studies&topic=Culture" class="btn btn-ss btn-sm topic-quiz-btn">Practice This Topic →</a>
+          </div>
+        </div>
+
+        <!-- Science, Technology, and Society -->
+        <div class="topic-card">
+          <div class="topic-header" onclick="toggleTopic(this)">
+            <span>🚀 Science, Technology, and Society</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="topic-body">
+            <ul class="topic-skills">
+              <li>Identify scientists and inventors: Jonas Salk (polio vaccine), Maria Mitchell (comet), Louis Pasteur (pasteurization), Bill Gates (computers)</li>
+              <li>Explain the impact of medical vaccines — allowed people to live longer, healthier lives</li>
+              <li>Explain how pasteurization made food safer</li>
+              <li>Understand how computers have transformed communities</li>
+            </ul>
+            <div class="resource-links">
+              <a href="https://www.youtube.com/results?search_query=Jonas+Salk+polio+vaccine+kids" class="resource-link" target="_blank">▶ YouTube — Jonas Salk</a>
+              <a href="https://www.youtube.com/results?search_query=Louis+Pasteur+pasteurization+kids+biography" class="resource-link" target="_blank">▶ YouTube — Louis Pasteur</a>
+            </div>
+            <a href="quiz.html?subject=social-studies&topic=Science%2C+Technology%2C+and+Society" class="btn btn-ss btn-sm topic-quiz-btn">Practice This Topic →</a>
+          </div>
+        </div>
+
+        <!-- Social Studies Skills -->
+        <div class="topic-card">
+          <div class="topic-header" onclick="toggleTopic(this)">
+            <span>📋 Social Studies Skills</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="topic-body">
+            <ul class="topic-skills">
+              <li>Research information using print, oral, visual, and internet resources</li>
+              <li>Sequence and categorize information</li>
+              <li>Identify main idea, fact vs. opinion, cause and effect, compare and contrast</li>
+              <li>Use book parts: table of contents, glossary, index</li>
+              <li>Read and interpret graphs, charts, tables, timelines, and maps</li>
+              <li>Distinguish primary sources (firsthand accounts) from secondary sources</li>
+              <li>Apply problem-solving and decision-making processes</li>
+            </ul>
+            <div class="resource-links">
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+fact+vs+opinion+social+studies" class="resource-link" target="_blank">▶ YouTube — Fact vs. Opinion</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+primary+secondary+sources" class="resource-link" target="_blank">▶ YouTube — Primary vs. Secondary Sources</a>
+            </div>
+            <a href="quiz.html?subject=social-studies&topic=Social+Studies+Skills" class="btn btn-ss btn-sm topic-quiz-btn">Practice This Topic →</a>
+          </div>
+        </div>
+
+      </div><!-- /.topic-list -->
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <h3>🎯 Practice Tests</h3>
+          <div class="sidebar-btn-list">
+            <a href="quiz.html?subject=social-studies&topic=all&count=20" class="btn btn-ss">Full Practice Test (20 Q)</a>
+            <a href="quiz.html?subject=social-studies&topic=all&count=10" class="btn btn-ss btn-sm">Quick Quiz (10 Q)</a>
+          </div>
+        </div>
+        <div class="sidebar-card">
+          <h3>📌 Practice by Topic</h3>
+          <div class="sidebar-btn-list">
+            <a href="quiz.html?subject=social-studies&topic=History"    class="btn btn-outline btn-sm" style="border-color:var(--ss);color:var(--ss);">History</a>
+            <a href="quiz.html?subject=social-studies&topic=Geography"  class="btn btn-outline btn-sm" style="border-color:var(--ss);color:var(--ss);">Geography</a>
+            <a href="quiz.html?subject=social-studies&topic=Economics"  class="btn btn-outline btn-sm" style="border-color:var(--ss);color:var(--ss);">Economics</a>
+            <a href="quiz.html?subject=social-studies&topic=Government" class="btn btn-outline btn-sm" style="border-color:var(--ss);color:var(--ss);">Government</a>
+            <a href="quiz.html?subject=social-studies&topic=Citizenship" class="btn btn-outline btn-sm" style="border-color:var(--ss);color:var(--ss);">Citizenship</a>
+            <a href="quiz.html?subject=social-studies&topic=Culture"    class="btn btn-outline btn-sm" style="border-color:var(--ss);color:var(--ss);">Culture</a>
+            <a href="quiz.html?subject=social-studies&topic=Science%2C+Technology%2C+and+Society" class="btn btn-outline btn-sm" style="border-color:var(--ss);color:var(--ss);">Science, Tech &amp; Society</a>
+            <a href="quiz.html?subject=social-studies&topic=Social+Studies+Skills" class="btn btn-outline btn-sm" style="border-color:var(--ss);color:var(--ss);">SS Skills</a>
+          </div>
+        </div>
+        <div class="sidebar-card">
+          <h3>📚 More Resources</h3>
+          <div class="sidebar-btn-list">
+            <a href="https://www.khanacademy.org/humanities/us-history" class="btn btn-gray btn-sm" target="_blank">Khan Academy — US History</a>
+            <a href="https://www.youtube.com/results?search_query=3rd+grade+social+studies+TEKS+Texas" class="btn btn-gray btn-sm" target="_blank">YouTube — 3rd Grade Social Studies</a>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <script>
+    function toggleTopic(header) {
+      const card = header.closest(".topic-card");
+      card.classList.toggle("open");
+    }
+  </script>
+
+</body>
+</html>

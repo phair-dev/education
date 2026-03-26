@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Science — Calvin's Study Site</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="site-logo">Calvin's <span>Study Site</span> 📚</a>
+      <nav class="nav-links">
+        <a href="math.html"           class="nav-link math">🔢 Math</a>
+        <a href="ela.html"            class="nav-link ela">📖 ELA</a>
+        <a href="science.html"        class="nav-link sci active">🔬 Science</a>
+        <a href="social-studies.html" class="nav-link ss">🌍 Social Studies</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <div class="subject-hero">
+      <div class="big-icon">🔬</div>
+      <div>
+        <h1 style="color: var(--sci);">Science</h1>
+        <p>3rd Grade TEKS — Scientific Practices, Matter, Forces, Earth &amp; Organisms</p>
+      </div>
+    </div>
+
+    <div class="subject-layout">
+
+      <div class="topic-list">
+
+        <!-- Scientific Practices -->
+        <div class="topic-card open">
+          <div class="topic-header" onclick="toggleTopic(this)">
+            <span>🔭 Scientific Practices</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="topic-body">
+            <ul class="topic-skills">
+              <li>Plan and conduct investigations; ask questions and make observations</li>
+              <li>Collect, measure, and record data using metric units</li>
+              <li>Use tools: thermometers, rulers, graduated cylinders, hand lenses, balances, spring scales</li>
+              <li>Organize data into tables, charts, and bar graphs</li>
+              <li>Analyze data and draw reasonable conclusions from evidence</li>
+              <li>Understand that repeated tests increase reliability</li>
+              <li>Know the limitations of models (size, materials, properties)</li>
+              <li>Practice lab safety: safety goggles, gloves, proper disposal</li>
+              <li>Evaluate product claims using evidence and reasoning</li>
+            </ul>
+            <div class="resource-links">
+              <a href="https://www.khanacademy.org/science/ms-physics/x1baed5db7f4003b1:get-started/x1baed5db7f4003b1:science-and-the-scientific-method/a/what-is-science" class="resource-link" target="_blank">📘 Khan Academy — Scientific Method</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+scientific+method+investigation+TEKS" class="resource-link" target="_blank">▶ YouTube — Scientific Method</a>
+            </div>
+            <a href="quiz.html?subject=science&topic=Scientific+Practices" class="btn btn-sci btn-sm topic-quiz-btn">Practice This Topic →</a>
+          </div>
+        </div>
+
+        <!-- Matter and Energy -->
+        <div class="topic-card">
+          <div class="topic-header" onclick="toggleTopic(this)">
+            <span>⚗️ Matter and Energy</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="topic-body">
+            <ul class="topic-skills">
+              <li>Describe and classify matter as solid, liquid, or gas</li>
+              <li>Understand that solids have definite shape; liquids and gases take the shape of their container</li>
+              <li>Measure physical properties: temperature, mass, magnetism, sink/float</li>
+              <li>Predict changes in state caused by heating or cooling (melting, freezing, evaporation, condensation)</li>
+              <li>Explore mixtures — two or more materials combined (sand + gravel, metal + plastic clips)</li>
+            </ul>
+            <div class="resource-links">
+              <a href="https://www.khanacademy.org/science/ap-chemistry-beta/x2eef969c74e0d802:intermolecular-forces-and-properties/x2eef969c74e0d802:solids-liquids-and-gases/v/states-of-matter" class="resource-link" target="_blank">📘 Khan Academy — States of Matter</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+states+of+matter+solid+liquid+gas" class="resource-link" target="_blank">▶ YouTube — States of Matter</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+physical+properties+matter+TEKS" class="resource-link" target="_blank">▶ YouTube — Physical Properties</a>
+            </div>
+            <a href="quiz.html?subject=science&topic=Matter+and+Energy" class="btn btn-sci btn-sm topic-quiz-btn">Practice This Topic →</a>
+          </div>
+        </div>
+
+        <!-- Force, Motion, and Energy -->
+        <div class="topic-card">
+          <div class="topic-header" onclick="toggleTopic(this)">
+            <span>⚡ Force, Motion, and Energy</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="topic-body">
+            <ul class="topic-skills">
+              <li>Identify forms of energy: mechanical, light, sound, heat/thermal</li>
+              <li>Understand that pushing and pulling changes position and motion (swings, balls, wagons)</li>
+              <li>Observe how gravity pulls objects toward Earth</li>
+              <li>Understand magnetism — like poles repel, opposite poles attract</li>
+              <li>Greater force = greater change in motion</li>
+            </ul>
+            <div class="resource-links">
+              <a href="https://www.khanacademy.org/science/ms-physics/x1baed5db7f4003b1:forces-and-motion" class="resource-link" target="_blank">📘 Khan Academy — Forces &amp; Motion</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+force+motion+energy+TEKS" class="resource-link" target="_blank">▶ YouTube — Forces &amp; Motion</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+forms+of+energy+light+sound+heat" class="resource-link" target="_blank">▶ YouTube — Forms of Energy</a>
+            </div>
+            <a href="quiz.html?subject=science&topic=Force%2C+Motion%2C+and+Energy" class="btn btn-sci btn-sm topic-quiz-btn">Practice This Topic →</a>
+          </div>
+        </div>
+
+        <!-- Earth and Space -->
+        <div class="topic-card">
+          <div class="topic-header" onclick="toggleTopic(this)">
+            <span>🌍 Earth and Space</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="topic-body">
+            <ul class="topic-skills">
+              <li>Understand how soil forms — weathering of rock + decomposition of organisms</li>
+              <li>Identify rapid Earth changes: volcanoes, earthquakes, landslides</li>
+              <li>Identify landforms: mountains, hills, valleys, plains</li>
+              <li>Measure and record weather: temperature, wind direction, precipitation</li>
+              <li>Understand the Sun as a star that provides light and heat for the water cycle</li>
+              <li>Know the orbits of Earth and Moon (Earth orbits Sun, Moon orbits Earth)</li>
+              <li>Name the 8 planets in order from the Sun: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune</li>
+              <li>Identify and conserve natural resources</li>
+            </ul>
+            <div class="resource-links">
+              <a href="https://www.khanacademy.org/science/cosmology-and-astronomy/earth-title" class="resource-link" target="_blank">📘 Khan Academy — Earth &amp; Space</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+solar+system+planets+TEKS" class="resource-link" target="_blank">▶ YouTube — Solar System</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+water+cycle+earth+TEKS" class="resource-link" target="_blank">▶ YouTube — Water Cycle</a>
+            </div>
+            <a href="quiz.html?subject=science&topic=Earth+and+Space" class="btn btn-sci btn-sm topic-quiz-btn">Practice This Topic →</a>
+          </div>
+        </div>
+
+        <!-- Organisms and Environment -->
+        <div class="topic-card">
+          <div class="topic-header" onclick="toggleTopic(this)">
+            <span>🌿 Organisms and Environment</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="topic-body">
+            <ul class="topic-skills">
+              <li>Describe environments and the populations that live in them (ecosystems)</li>
+              <li>Identify the flow of energy in a food chain (producer → consumer → decomposer)</li>
+              <li>Predict how changes in a food chain affect the ecosystem</li>
+              <li>Describe how organisms respond to environmental changes (floods, droughts)</li>
+              <li>Identify structures and adaptations that help animals and plants survive</li>
+              <li>Distinguish inherited traits from learned behaviors</li>
+              <li>Describe life cycles: tomato plant, frog, butterfly, ladybug, chicken</li>
+            </ul>
+            <div class="resource-links">
+              <a href="https://www.khanacademy.org/science/ms-biology/ms-ecology" class="resource-link" target="_blank">📘 Khan Academy — Ecology</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+food+chain+ecosystem+TEKS" class="resource-link" target="_blank">▶ YouTube — Food Chains</a>
+              <a href="https://www.youtube.com/results?search_query=3rd+grade+life+cycles+frog+butterfly" class="resource-link" target="_blank">▶ YouTube — Life Cycles</a>
+            </div>
+            <a href="quiz.html?subject=science&topic=Organisms+and+Environment" class="btn btn-sci btn-sm topic-quiz-btn">Practice This Topic →</a>
+          </div>
+        </div>
+
+      </div><!-- /.topic-list -->
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <h3>🎯 Practice Tests</h3>
+          <div class="sidebar-btn-list">
+            <a href="quiz.html?subject=science&topic=all&count=20" class="btn btn-sci">Full Practice Test (20 Q)</a>
+            <a href="quiz.html?subject=science&topic=all&count=10" class="btn btn-sci btn-sm">Quick Quiz (10 Q)</a>
+          </div>
+        </div>
+        <div class="sidebar-card">
+          <h3>📌 Practice by Topic</h3>
+          <div class="sidebar-btn-list">
+            <a href="quiz.html?subject=science&topic=Scientific+Practices"       class="btn btn-outline btn-sm" style="border-color:var(--sci);color:var(--sci);">Scientific Practices</a>
+            <a href="quiz.html?subject=science&topic=Matter+and+Energy"          class="btn btn-outline btn-sm" style="border-color:var(--sci);color:var(--sci);">Matter &amp; Energy</a>
+            <a href="quiz.html?subject=science&topic=Force%2C+Motion%2C+and+Energy" class="btn btn-outline btn-sm" style="border-color:var(--sci);color:var(--sci);">Force, Motion &amp; Energy</a>
+            <a href="quiz.html?subject=science&topic=Earth+and+Space"            class="btn btn-outline btn-sm" style="border-color:var(--sci);color:var(--sci);">Earth &amp; Space</a>
+            <a href="quiz.html?subject=science&topic=Organisms+and+Environment"  class="btn btn-outline btn-sm" style="border-color:var(--sci);color:var(--sci);">Organisms &amp; Environment</a>
+          </div>
+        </div>
+        <div class="sidebar-card">
+          <h3>📚 More Resources</h3>
+          <div class="sidebar-btn-list">
+            <a href="https://www.khanacademy.org/science" class="btn btn-gray btn-sm" target="_blank">Khan Academy Science</a>
+            <a href="https://www.youtube.com/results?search_query=3rd+grade+science+TEKS+Texas" class="btn btn-gray btn-sm" target="_blank">YouTube — 3rd Grade Science</a>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <script>
+    function toggleTopic(header) {
+      const card = header.closest(".topic-card");
+      card.classList.toggle("open");
+    }
+  </script>
+
+</body>
+</html>

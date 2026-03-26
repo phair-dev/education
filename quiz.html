@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz — Calvin's Study Site</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="site-logo">Calvin's <span>Study Site</span> 📚</a>
+      <nav class="nav-links">
+        <a href="math.html"           class="nav-link math">🔢 Math</a>
+        <a href="ela.html"            class="nav-link ela">📖 ELA</a>
+        <a href="science.html"        class="nav-link sci">🔬 Science</a>
+        <a href="social-studies.html" class="nav-link ss">🌍 Social Studies</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Quiz Wrapper -->
+  <div class="quiz-wrapper">
+
+    <!-- Back link (filled by JS) -->
+    <a href="index.html" id="back-link" class="text-muted btn btn-sm btn-gray mb-24" style="display:inline-flex; margin-bottom:20px;">← Back</a>
+
+    <!-- Quiz title row -->
+    <div class="quiz-header">
+      <div>
+        <div class="quiz-title" id="quiz-subject">Quiz</div>
+        <div style="font-size:0.85rem; color:var(--muted); font-weight:700;" id="quiz-topic"></div>
+      </div>
+      <div id="progress-text" class="quiz-counter">Question 1 of 20</div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="progress-bar-track mb-24" style="margin-bottom:24px;">
+      <div class="progress-bar-fill" id="progress-bar" style="width:0%"></div>
+    </div>
+
+    <!-- Quiz Screen -->
+    <div id="quiz-screen">
+      <div class="question-card">
+        <div class="question-text" id="question-text">Loading…</div>
+        <div class="options-grid" id="options-container"></div>
+        <div class="explanation-box" id="explanation"></div>
+      </div>
+
+      <div class="next-btn-row">
+        <button id="next-btn" class="btn btn-green btn-lg" style="display:none;">Next →</button>
+      </div>
+    </div>
+
+    <!-- Results Screen -->
+    <div id="results-screen" style="display:none;">
+      <div class="results-card">
+        <div class="results-emoji">🎉</div>
+        <div class="results-score" id="result-score">—</div>
+        <div class="results-pct"   id="result-pct">—</div>
+        <div class="results-stars" id="result-stars">★★★★★</div>
+        <div class="results-msg"   id="result-message"></div>
+        <div class="results-buttons">
+          <button id="save-btn"      class="btn btn-green btn-lg">Save Score</button>
+          <button id="try-again-btn" class="btn btn-gray  btn-lg">Try Again</button>
+          <a      id="back-link-2"   href="index.html" class="btn btn-outline btn-lg" style="border:2px solid var(--border);">🏠 Home</a>
+        </div>
+        <div class="save-status" id="save-status"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script type="module">
+    import MATH_QUESTIONS from "./js/questions-math.js";
+    import ELA_QUESTIONS  from "./js/questions-ela.js";
+    import SCI_QUESTIONS  from "./js/questions-science.js";
+    import SS_QUESTIONS   from "./js/questions-ss.js";
+    import { saveScore }  from "./js/firebase-config.js";
+
+    const BANKS = {
+      math:             MATH_QUESTIONS,
+      ela:              ELA_QUESTIONS,
+      science:          SCI_QUESTIONS,
+      "social-studies": SS_QUESTIONS,
+    };
+
+    const SUBJECT_LABELS = {
+      math:             "Math",
+      ela:              "ELA",
+      science:          "Science",
+      "social-studies": "Social Studies",
+    };
+
+    const SUBJECT_PAGES = {
+      math:             "math.html",
+      ela:              "ela.html",
+      science:          "science.html",
+      "social-studies": "social-studies.html",
+    };
+
+    // ── State ──────────────────────────────────────────────────────────────
+    let questions    = [];
+    let currentIndex = 0;
+    let score        = 0;
+    let answered     = false;
+
+    const params  = new URLSearchParams(window.location.search);
+    const subject = params.get("subject") || "math";
+    const topic   = params.get("topic")   || "all";
+    const count   = parseInt(params.get("count") || "20", 10);
+
+    // ── Init ───────────────────────────────────────────────────────────────
+    function init() {
+      const bank = BANKS[subject] || MATH_QUESTIONS;
+      const pool = topic === "all" ? bank : bank.filter(q => q.topic === topic);
+
+      questions = shuffle([...pool]).slice(0, Math.min(count, pool.length));
+      currentIndex = 0;
+      score = 0;
+
+      const label = SUBJECT_LABELS[subject] || subject;
+      document.getElementById("quiz-subject").textContent = label;
+      document.getElementById("quiz-topic").textContent   = topic === "all" ? "Full Practice Test" : topic;
+
+      // Set progress bar color based on subject
+      const fillEl = document.getElementById("progress-bar");
+      if (subject === "ela")             fillEl.classList.add("ela");
+      else if (subject === "science")    fillEl.classList.add("sci");
+      else if (subject === "social-studies") fillEl.classList.add("ss");
+
+      // Back links
+      const backPage = SUBJECT_PAGES[subject] || "index.html";
+      document.getElementById("back-link").href        = backPage;
+      document.getElementById("back-link").textContent = `← Back to ${label}`;
+      document.getElementById("back-link-2").href      = backPage;
+      document.getElementById("back-link-2").textContent = `← Back to ${label}`;
+
+      if (questions.length === 0) {
+        document.getElementById("quiz-screen").innerHTML = `
+          <div class="empty-state">
+            <div class="big">😕</div>
+            <p>No questions found for this topic. Try a different one!</p>
+          </div>`;
+        return;
+      }
+
+      renderQuestion();
+    }
+
+    // ── Render ─────────────────────────────────────────────────────────────
+    function renderQuestion() {
+      if (currentIndex >= questions.length) {
+        showResults();
+        return;
+      }
+
+      const q  = questions[currentIndex];
+      answered = false;
+
+      // Progress
+      const pct = Math.round((currentIndex / questions.length) * 100);
+      document.getElementById("progress-bar").style.width = pct + "%";
+      document.getElementById("progress-text").textContent =
+        `Question ${currentIndex + 1} of ${questions.length}`;
+
+      // Question
+      document.getElementById("question-text").textContent = q.question;
+
+      // Options
+      const optContainer = document.getElementById("options-container");
+      optContainer.innerHTML = "";
+      const labels = ["A", "B", "C", "D"];
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.innerHTML = `<span class="option-label">${labels[i]}</span><span class="option-text">${opt}</span>`;
+        btn.addEventListener("click", () => selectAnswer(i));
+        optContainer.appendChild(btn);
+      });
+
+      // Explanation
+      const expEl = document.getElementById("explanation");
+      expEl.style.display = "none";
+      expEl.className     = "explanation-box";
+      expEl.textContent   = "";
+
+      // Next button
+      const nextBtn = document.getElementById("next-btn");
+      nextBtn.style.display = "none";
+      nextBtn.textContent   = currentIndex + 1 < questions.length ? "Next →" : "See Results →";
+    }
+
+    function selectAnswer(selected) {
+      if (answered) return;
+      answered = true;
+
+      const q    = questions[currentIndex];
+      const btns = document.querySelectorAll(".option-btn");
+      const isCorrect = selected === q.correct;
+
+      btns.forEach((btn, i) => {
+        btn.disabled = true;
+        if (i === q.correct) {
+          btn.classList.add("correct");
+        } else if (i === selected && !isCorrect) {
+          btn.classList.add("wrong");
+        } else {
+          btn.classList.add("dimmed");
+        }
+      });
+
+      if (isCorrect) score++;
+
+      // Show explanation
+      const expEl = document.getElementById("explanation");
+      expEl.textContent   = q.explanation;
+      expEl.style.display = "block";
+      if (!isCorrect) expEl.classList.add("wrong-exp");
+
+      // Show next button
+      document.getElementById("next-btn").style.display = "inline-flex";
+    }
+
+    document.getElementById("next-btn").addEventListener("click", () => {
+      currentIndex++;
+      renderQuestion();
+    });
+
+    // ── Results ────────────────────────────────────────────────────────────
+    function showResults() {
+      document.getElementById("quiz-screen").style.display    = "none";
+      document.getElementById("results-screen").style.display = "block";
+
+      const total = questions.length;
+      const pct   = Math.round((score / total) * 100);
+
+      document.getElementById("result-score").textContent   = `${score} / ${total}`;
+      document.getElementById("result-pct").textContent     = `${pct}%`;
+      document.getElementById("result-stars").textContent   = getStars(pct);
+      document.getElementById("result-message").textContent = getMessage(pct);
+
+      // Update progress bar to 100%
+      document.getElementById("progress-bar").style.width      = "100%";
+      document.getElementById("progress-text").textContent     = "Finished!";
+    }
+
+    function getStars(pct) {
+      if (pct >= 90) return "★★★★★";
+      if (pct >= 75) return "★★★★☆";
+      if (pct >= 60) return "★★★☆☆";
+      if (pct >= 40) return "★★☆☆☆";
+      return "★☆☆☆☆";
+    }
+
+    function getMessage(pct) {
+      if (pct === 100) return "PERFECT! You're amazing, Calvin! 🎉";
+      if (pct >= 90)   return "Fantastic job! You really know this stuff! 🌟";
+      if (pct >= 75)   return "Great work! Keep it up and you'll ace the test! 👍";
+      if (pct >= 60)   return "Good effort! Review the ones you missed and try again!";
+      if (pct >= 40)   return "You're learning! Study those topics and try again!";
+      return "Don't give up, Calvin! Review the material and try again — you've got this!";
+    }
+
+    // ── Save Score ──────────────────────────────────────────────────────────
+    document.getElementById("save-btn").addEventListener("click", async () => {
+      const saveBtn    = document.getElementById("save-btn");
+      const statusEl   = document.getElementById("save-status");
+      saveBtn.disabled = true;
+      saveBtn.textContent = "Saving…";
+      statusEl.textContent = "";
+
+      try {
+        await saveScore({ subject, topic, score, total: questions.length });
+        saveBtn.textContent  = "✓ Saved!";
+        statusEl.textContent = "Score saved to your history!";
+      } catch (err) {
+        console.error(err);
+        saveBtn.textContent  = "Error — try again";
+        saveBtn.disabled     = false;
+        statusEl.textContent = "Could not save score. Check your connection.";
+      }
+    });
+
+    document.getElementById("try-again-btn").addEventListener("click", () => {
+      window.location.reload();
+    });
+
+    // ── Shuffle ─────────────────────────────────────────────────────────────
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    init();
+  </script>
+
+</body>
+</html>
