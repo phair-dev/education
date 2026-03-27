@@ -119,8 +119,8 @@ const MATH_QUESTIONS = [
     id: "m-015", subject: "math", topic: "Numbers and Operations",
     question: "Ryan has 4 quarters, 3 dimes, and 2 nickels. How much money does he have in all?",
     options: ["$1.30", "$1.40", "$1.50", "$1.60"],
-    correct: 2,
-    explanation: "4 quarters = $1.00, 3 dimes = $0.30, 2 nickels = $0.10. Total: $1.00 + $0.30 + $0.10 = $1.40. Wait — that is $1.40 (option B). Let me recalculate: 4×25=100¢, 3×10=30¢, 2×5=10¢. 100+30+10=140¢ = $1.40."
+    correct: 1,
+    explanation: "4 quarters = $1.00, 3 dimes = $0.30, 2 nickels = $0.10. Total: $1.00 + $0.30 + $0.10 = $1.40."
   },
   {
     id: "m-015b", subject: "math", topic: "Numbers and Operations",
