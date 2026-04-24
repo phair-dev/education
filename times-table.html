@@ -81,9 +81,10 @@
       color: var(--text);
       cursor: pointer;
     }
-    table.times .cell:hover {
-      background: var(--math);
-      color: #fff;
+    table.times .cell:hover,
+    table.times tr:nth-child(even) .cell:hover {
+      background: var(--math) !important;
+      color: #fff !important;
       transform: scale(1.12);
       z-index: 2;
       position: relative;
