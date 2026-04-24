@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Division Worksheets — Calvin's Study Site</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .ws-section {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .ws-section h2 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .ws-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+    .ws-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .ws-problem {
+      background: #F8FAFC;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      flex-wrap: wrap;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .ws-problem.correct { border-color: var(--green); background: #DCFCE7; }
+    .ws-problem.wrong   { border-color: var(--red);   background: #FEE2E2; }
+    .ws-problem input {
+      width: 52px;
+      text-align: center;
+      font-family: inherit;
+      font-size: 1.05rem;
+      font-weight: 700;
+      border: none;
+      border-bottom: 2px solid var(--math);
+      background: transparent;
+      color: var(--text);
+      outline: none;
+      padding: 2px 4px;
+    }
+    .check-icon { font-size: 1.1rem; margin-left: auto; }
+    .correct-ans {
+      font-size: 0.82rem;
+      color: var(--red);
+      font-weight: 700;
+    }
+    .ws-score {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 12px;
+      min-height: 20px;
+    }
+    .ws-score.good { color: var(--green); }
+    .ws-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+
+    /* Fact families */
+    .fact-family-box {
+      background: #F8FAFC;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-bottom: 10px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .fact-family-box.correct { border-color: var(--green); background: #DCFCE7; }
+    .fact-family-box.wrong   { border-color: var(--red);   background: #FEE2E2; }
+    .ff-hint {
+      font-size: 0.88rem;
+      color: var(--muted);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .ff-question {
+      font-size: 1.1rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .ff-question input {
+      width: 52px;
+      text-align: center;
+      font-family: inherit;
+      font-size: 1.05rem;
+      font-weight: 700;
+      border: none;
+      border-bottom: 2px solid var(--math);
+      background: transparent;
+      color: var(--text);
+      outline: none;
+      padding: 2px 4px;
+    }
+
+    /* Word problems */
+    .word-problem {
+      background: #F8FAFC;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .word-problem.correct { border-color: var(--green); background: #DCFCE7; }
+    .word-problem.wrong   { border-color: var(--red);   background: #FEE2E2; }
+    .word-problem p {
+      font-size: 0.97rem;
+      margin-bottom: 12px;
+      line-height: 1.55;
+    }
+    .wp-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .word-problem input {
+      width: 68px;
+      text-align: center;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      background: white;
+      color: var(--text);
+      outline: none;
+      padding: 5px 8px;
+    }
+    .result-msg {
+      font-size: 0.87rem;
+      font-weight: 700;
+    }
+    .result-msg.ok  { color: var(--green); }
+    .result-msg.err { color: var(--red); }
+
+    .page-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="site-logo">Calvin's <span>Study Site</span> 📚</a>
+      <nav class="nav-links">
+        <a href="math.html"           class="nav-link math active">🔢 Math</a>
+        <a href="ela.html"            class="nav-link ela">📖 ELA</a>
+        <a href="science.html"        class="nav-link sci">🔬 Science</a>
+        <a href="social-studies.html" class="nav-link ss">🌍 Social Studies</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <div class="subject-hero">
+      <div class="big-icon">➗</div>
+      <div>
+        <h1 style="color: var(--math);">Division Worksheets</h1>
+        <p>Practice dividing, find missing numbers, and see how multiplication and division work together</p>
+      </div>
+    </div>
+
+    <!-- Study Notes -->
+    <div class="ws-section">
+      <h2>📖 What You Need to Know</h2>
+      <div class="study-notes" style="margin-top: 12px;">
+        <h4>Division Key Ideas</h4>
+        <ul>
+          <li><strong>What is division?</strong> Splitting a total into equal groups. 24 ÷ 6 means "split 24 into 6 equal groups" → each group gets 4.</li>
+          <li><strong>Parts of a division problem:</strong> <em>Dividend</em> (the big number you start with) ÷ <em>Divisor</em> (how many groups) = <em>Quotient</em> (the answer — size of each group).</li>
+          <li><strong>Division is the inverse of multiplication!</strong> If 6 × 4 = 24, then 24 ÷ 6 = 4 and 24 ÷ 4 = 6. They undo each other.</li>
+          <li><strong>Fact families:</strong> Three numbers make a fact family. Example — 3, 8, 24 → 3×8=24, 8×3=24, 24÷3=8, 24÷8=3. All four facts use the same three numbers!</li>
+          <li><strong>Check your answer:</strong> Multiply quotient × divisor. If it equals the dividend, you're right! 4 × 6 = 24 ✓</li>
+          <li><strong>Strategy tip:</strong> Think "what times ___ equals ___?" Example: 42 ÷ 7 → "what × 7 = 42?" → 6!</li>
+          <li><strong>Dividing by 1:</strong> Any number ÷ 1 = itself. 9 ÷ 1 = 9.</li>
+          <li><strong>Dividing by itself:</strong> Any number ÷ itself = 1. 7 ÷ 7 = 1.</li>
+          <li><strong>Zero rule:</strong> 0 ÷ any number = 0. You can never divide by 0.</li>
+        </ul>
+      </div>
+      <div class="video-section" style="margin-top: 16px;">
+        <h4>Watch &amp; Learn</h4>
+        <div class="video-grid">
+          <div class="video-item">
+            <div class="video-wrap">
+              <iframe src="https://www.youtube.com/embed/KGMf314LUc0" loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="video-label">Math Antics — Basic Division</div>
+          </div>
+          <div class="video-item">
+            <div class="video-wrap">
+              <iframe src="https://www.youtube.com/embed/RVYwunbpMHA" loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="video-label">Math Antics — Multiplication (the inverse!)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-actions">
+      <button class="btn btn-math" onclick="generateAll()">🔄 New Problems</button>
+      <a href="math.html" class="btn btn-gray btn-sm">← Back to Math</a>
+      <a href="quiz.html?subject=math&topic=Numbers+and+Operations" class="btn btn-outline btn-sm" style="border-color:var(--math);color:var(--math);">Take a Quiz →</a>
+    </div>
+
+    <!-- Worksheet 1: Basic Division Facts -->
+    <div class="ws-section">
+      <h2>✏️ Worksheet 1 — Basic Division Facts</h2>
+      <p class="ws-desc">Solve each division problem. Type your answer and press Enter or click Check Answers.</p>
+      <div class="ws-score" id="score1"></div>
+      <div class="ws-grid" id="ws1"></div>
+      <div class="ws-row">
+        <button class="btn btn-math btn-sm" onclick="checkAll(1)">Check Answers</button>
+        <button class="btn btn-gray btn-sm" onclick="generateWS1()">New Problems</button>
+      </div>
+    </div>
+
+    <!-- Worksheet 2: Fact Families / Inverse -->
+    <div class="ws-section">
+      <h2>🔄 Worksheet 2 — Fact Families &amp; Inverse Operations</h2>
+      <p class="ws-desc">Use the multiplication fact shown to fill in the related division equation. They use the same three numbers!</p>
+      <div class="ws-score" id="score2"></div>
+      <div id="ws2"></div>
+      <div class="ws-row">
+        <button class="btn btn-math btn-sm" onclick="checkAll(2)">Check Answers</button>
+        <button class="btn btn-gray btn-sm" onclick="generateWS2()">New Problems</button>
+      </div>
+    </div>
+
+    <!-- Worksheet 3: Missing Numbers -->
+    <div class="ws-section">
+      <h2>🔍 Worksheet 3 — Find the Missing Number</h2>
+      <p class="ws-desc">Fill in the blank to make the equation true. The missing piece could be any part of the problem — use what you know to figure it out!</p>
+      <div class="ws-score" id="score3"></div>
+      <div class="ws-grid" id="ws3"></div>
+      <div class="ws-row">
+        <button class="btn btn-math btn-sm" onclick="checkAll(3)">Check Answers</button>
+        <button class="btn btn-gray btn-sm" onclick="generateWS3()">New Problems</button>
+      </div>
+    </div>
+
+    <!-- Worksheet 4: Word Problems -->
+    <div class="ws-section">
+      <h2>📝 Worksheet 4 — Word Problems</h2>
+      <p class="ws-desc">Read each story problem carefully. What is being divided? Into how many groups? Write your answer and check it.</p>
+      <div class="ws-score" id="score4"></div>
+      <div id="ws4"></div>
+      <div class="ws-row" style="margin-top: 4px;">
+        <button class="btn btn-math btn-sm" onclick="checkAll(4)">Check Answers</button>
+        <button class="btn btn-gray btn-sm" onclick="generateWS4()">New Problems</button>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // ── Helpers ────────────────────────────────────────────────────────────────
+    const FACTS = [];
+    for (let a = 1; a <= 12; a++) {
+      for (let b = 1; b <= 12; b++) {
+        FACTS.push({ a, b, product: a * b });
+      }
+    }
+
+    function shuffle(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function pick(arr, n) { return shuffle(arr).slice(0, n); }
+    function rnd(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+    // ── Worksheet 1: Basic Division Facts ─────────────────────────────────────
+    let ws1Data = [];
+    function generateWS1() {
+      document.getElementById('score1').textContent = '';
+      ws1Data = pick(FACTS, 12).map(f => ({ dividend: f.product, divisor: f.b, answer: f.a }));
+      document.getElementById('ws1').innerHTML = ws1Data.map((p, i) => `
+        <div class="ws-problem" id="ws1p${i}">
+          <span>${p.dividend} ÷ ${p.divisor} =</span>
+          <input type="number" id="ws1i${i}" min="0" max="144" placeholder="?"
+            onkeydown="if(event.key==='Enter') checkAll(1)">
+          <span class="check-icon" id="ws1c${i}"></span>
+          <span class="correct-ans" id="ws1a${i}" style="display:none"></span>
+        </div>
+      `).join('');
+    }
+
+    // ── Worksheet 2: Fact Families ─────────────────────────────────────────────
+    let ws2Data = [];
+    function generateWS2() {
+      document.getElementById('score2').textContent = '';
+      ws2Data = pick(FACTS, 8).map(f => {
+        const askByB = Math.random() < 0.5;
+        return {
+          a: f.a, b: f.b, product: f.product,
+          divisor: askByB ? f.b : f.a,
+          answer:  askByB ? f.a : f.b,
+        };
+      });
+      document.getElementById('ws2').innerHTML = ws2Data.map((p, i) => `
+        <div class="fact-family-box" id="ws2p${i}">
+          <div class="ff-hint">Since ${p.a} × ${p.b} = ${p.product} ...</div>
+          <div class="ff-question">
+            <span>${p.product} ÷ ${p.divisor} =</span>
+            <input type="number" id="ws2i${i}" min="0" max="144" placeholder="?"
+              onkeydown="if(event.key==='Enter') checkAll(2)">
+            <span class="check-icon" id="ws2c${i}"></span>
+            <span class="correct-ans" id="ws2a${i}" style="display:none"></span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ── Worksheet 3: Missing Numbers ───────────────────────────────────────────
+    let ws3Data = [];
+    function generateWS3() {
+      document.getElementById('score3').textContent = '';
+      ws3Data = pick(FACTS, 12).map(f => {
+        const types = ['quotient', 'dividend', 'divisor'];
+        const type = types[Math.floor(Math.random() * 3)];
+        const answer = type === 'quotient' ? f.a
+                     : type === 'dividend' ? f.product
+                     :                       f.b;
+        return { ...f, type, answer };
+      });
+      document.getElementById('ws3').innerHTML = ws3Data.map((p, i) => {
+        const label = p.type === 'quotient' ? `${p.product} ÷ ${p.b} =`
+                    : p.type === 'dividend' ? `___ ÷ ${p.b} = ${p.a}`
+                    :                         `${p.product} ÷ ___ = ${p.a}`;
+        return `
+          <div class="ws-problem" id="ws3p${i}">
+            <span style="font-size:0.92rem;">${label}</span>
+            <input type="number" id="ws3i${i}" min="0" max="144" placeholder="?"
+              onkeydown="if(event.key==='Enter') checkAll(3)">
+            <span class="check-icon" id="ws3c${i}"></span>
+            <span class="correct-ans" id="ws3a${i}" style="display:none"></span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ── Worksheet 4: Word Problems ─────────────────────────────────────────────
+    const WORD_TEMPLATES = [
+      () => { const g=rnd(2,9), s=rnd(2,12), t=g*s; return { text: `Calvin has ${t} stickers and shares them equally among ${g} friends. How many stickers does each friend get?`, answer: s }; },
+      () => { const r=rnd(2,8), c=rnd(2,10), t=r*c; return { text: `There are ${t} cookies arranged in ${r} equal rows on a baking sheet. How many cookies are in each row?`, answer: c }; },
+      () => { const d=rnd(2,9), p=rnd(2,11), t=d*p; return { text: `A box of ${t} crayons is packed equally into ${d} bags. How many crayons are in each bag?`, answer: p }; },
+      () => { const t=rnd(2,10), b=rnd(2,8),  n=t*b;  return { text: `${n} students are split evenly into ${t} teams for a game. How many students are on each team?`, answer: b }; },
+      () => { const d=rnd(2,7),  h=rnd(2,10), t=d*h; return { text: `Calvin reads ${t} pages over ${d} days and reads the same amount each day. How many pages does he read per day?`, answer: h }; },
+      () => { const b=rnd(2,9),  s=rnd(2,10), t=b*s; return { text: `A farmer puts eggs into cartons with ${s} eggs each. If there are ${t} eggs total, how many cartons are filled?`, answer: b }; },
+      () => { const r=rnd(2,8),  c=rnd(2,9),  t=r*c; return { text: `${t} chairs are arranged in ${r} equal rows. How many chairs are in each row?`, answer: c }; },
+      () => { const g=rnd(2,9),  m=rnd(2,11), t=g*m; return { text: `${t} marbles are shared equally between ${g} jars. How many marbles go in each jar?`, answer: m }; },
+      () => { const b=rnd(2,8),  p=rnd(2,10), t=b*p; return { text: `A shelf holds ${b} equal stacks of books with ${t} books total. How many books are in each stack?`, answer: p }; },
+      () => { const w=rnd(2,9),  d=rnd(2,8),  t=w*d; return { text: `Calvin earns ${t} coins over ${w} weeks by earning the same amount each week. How many coins does he earn per week?`, answer: d }; },
+    ];
+
+    let ws4Data = [];
+    function generateWS4() {
+      document.getElementById('score4').textContent = '';
+      ws4Data = shuffle(WORD_TEMPLATES).slice(0, 5).map(fn => fn());
+      document.getElementById('ws4').innerHTML = ws4Data.map((p, i) => `
+        <div class="word-problem" id="ws4p${i}">
+          <p>${p.text}</p>
+          <div class="wp-row">
+            <span style="font-weight:700;">Answer:</span>
+            <input type="number" id="ws4i${i}" min="0" max="200" placeholder="?"
+              onkeydown="if(event.key==='Enter') checkAll(4)">
+            <span class="result-msg" id="ws4m${i}"></span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ── Check Logic ────────────────────────────────────────────────────────────
+    function checkAll(ws) {
+      if (ws === 1) checkGrid(ws1Data, 1, p => p.answer);
+      if (ws === 2) checkGrid(ws2Data, 2, p => p.answer);
+      if (ws === 3) checkGrid(ws3Data, 3, p => p.answer);
+      if (ws === 4) checkWordProblems();
+    }
+
+    function checkGrid(data, wsNum, getAnswer) {
+      let correct = 0;
+      data.forEach((p, i) => {
+        const input = document.getElementById(`ws${wsNum}i${i}`);
+        const card  = document.getElementById(`ws${wsNum}p${i}`);
+        const icon  = document.getElementById(`ws${wsNum}c${i}`);
+        const ansEl = document.getElementById(`ws${wsNum}a${i}`);
+        const val   = parseInt(input.value, 10);
+        const expected = getAnswer(p);
+        card.classList.remove('correct', 'wrong');
+        if (isNaN(val)) { icon.textContent = ''; ansEl.style.display = 'none'; return; }
+        if (val === expected) {
+          card.classList.add('correct');
+          icon.textContent = '✓';
+          ansEl.style.display = 'none';
+          correct++;
+        } else {
+          card.classList.add('wrong');
+          icon.textContent = '✗';
+          ansEl.textContent = `→ ${expected}`;
+          ansEl.style.display = '';
+        }
+      });
+      const scoreEl = document.getElementById(`score${wsNum}`);
+      const pct = Math.round(100 * correct / data.length);
+      scoreEl.textContent = `${correct} / ${data.length} correct (${pct}%)`;
+      scoreEl.className = 'ws-score' + (pct >= 80 ? ' good' : '');
+    }
+
+    function checkWordProblems() {
+      let correct = 0;
+      ws4Data.forEach((p, i) => {
+        const input = document.getElementById(`ws4i${i}`);
+        const card  = document.getElementById(`ws4p${i}`);
+        const msg   = document.getElementById(`ws4m${i}`);
+        const val   = parseInt(input.value, 10);
+        card.classList.remove('correct', 'wrong');
+        if (isNaN(val)) { msg.textContent = ''; return; }
+        if (val === p.answer) {
+          card.classList.add('correct');
+          msg.textContent = '✓ Correct!';
+          msg.className = 'result-msg ok';
+          correct++;
+        } else {
+          card.classList.add('wrong');
+          msg.textContent = `✗ The answer is ${p.answer}`;
+          msg.className = 'result-msg err';
+        }
+      });
+      const scoreEl = document.getElementById('score4');
+      const pct = Math.round(100 * correct / ws4Data.length);
+      scoreEl.textContent = `${correct} / ${ws4Data.length} correct (${pct}%)`;
+      scoreEl.className = 'ws-score' + (pct >= 80 ? ' good' : '');
+    }
+
+    // ── Init ───────────────────────────────────────────────────────────────────
+    function generateAll() {
+      generateWS1();
+      generateWS2();
+      generateWS3();
+      generateWS4();
+    }
+
+    generateAll();
+  </script>
+
+</body>
+</html>
