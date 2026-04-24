@@ -472,7 +472,7 @@ const MATH_QUESTIONS = [
     id: "m-506", subject: "math", topic: "Geometry and Measurement",
     question: "A shape is made of two rectangles. Rectangle A is 3 cm × 4 cm and Rectangle B is 2 cm × 5 cm. What is the total area?",
     options: ["22 sq cm", "26 sq cm", "28 sq cm", "34 sq cm"],
-    correct: 1,
+    correct: 0,
     explanation: "Area A = 3 × 4 = 12 sq cm. Area B = 2 × 5 = 10 sq cm. Total = 12 + 10 = 22 sq cm."
   },
   {
