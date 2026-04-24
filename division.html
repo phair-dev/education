@@ -279,6 +279,27 @@
       </div>
     </div>
 
+    <!-- Worksheet 5: Remainders -->
+    <div class="ws-section">
+      <h2>🍪 Worksheet 5 — Remainders</h2>
+      <p class="ws-desc">Sometimes things don't divide evenly — there's some left over! Fill in <strong>both</strong> blanks: how many each person/group gets, and how many are left over.</p>
+      <div class="study-notes" style="margin-bottom: 16px;">
+        <h4>How Remainders Work</h4>
+        <ul>
+          <li><strong>What is a remainder?</strong> The amount left over after dividing as evenly as possible. Example: 17 ÷ 5 = 3 remainder 2 (three groups of 5 = 15, with 2 left over).</li>
+          <li><strong>How to find it:</strong> Divide → find the biggest multiple that fits → subtract. 50 ÷ 3: 3×16=48 (fits), 50−48=2. So answer is 16 remainder 2.</li>
+          <li><strong>Check your work:</strong> (quotient × divisor) + remainder = original number. 16×3+2 = 48+2 = 50 ✓</li>
+          <li><strong>The remainder is always smaller than the divisor.</strong> If 50÷3 and your remainder is 3 or more, you can fit one more group!</li>
+        </ul>
+      </div>
+      <div class="ws-score" id="score5"></div>
+      <div id="ws5"></div>
+      <div class="ws-row" style="margin-top: 4px;">
+        <button class="btn btn-math btn-sm" onclick="checkAll(5)">Check Answers</button>
+        <button class="btn btn-gray btn-sm" onclick="generateWS5()">New Problems</button>
+      </div>
+    </div>
+
   </main>
 
   <script>
@@ -408,12 +429,47 @@
       `).join('');
     }
 
+    // ── Worksheet 5: Remainder Word Problems ──────────────────────────────────
+    const REMAINDER_TEMPLATES = [
+      () => { const d=rnd(3,9), q=rnd(3,12), r=rnd(1,d-1), t=d*q+r; return { text: `Calvin has ${t} cookies. He wants to share them equally among ${d} friends. How many cookies does each friend get, and how many are left over?`, divisor: d, quotient: q, remainder: r }; },
+      () => { const d=rnd(3,8), q=rnd(4,11), r=rnd(1,d-1), t=d*q+r; return { text: `There are ${t} students going on a field trip. Each van holds ${d} students. How many students will be in each full van, and how many students won't fill a van completely?`, divisor: d, quotient: q, remainder: r }; },
+      () => { const d=rnd(3,7), q=rnd(3,10), r=rnd(1,d-1), t=d*q+r; return { text: `A baker has ${t} muffins to pack into boxes. Each box holds ${d} muffins. How many muffins go in each box, and how many muffins are left over?`, divisor: d, quotient: q, remainder: r }; },
+      () => { const d=rnd(3,9), q=rnd(3,11), r=rnd(1,d-1), t=d*q+r; return { text: `Calvin has ${t} trading cards and wants to sort them into piles of ${d}. How many cards will be in each pile, and how many cards will be left over?`, divisor: d, quotient: q, remainder: r }; },
+      () => { const d=rnd(3,8), q=rnd(4,12), r=rnd(1,d-1), t=d*q+r; return { text: `${t} apples need to be packed into bags of ${d}. How many apples will be in each full bag, and how many apples won't fit into a complete bag?`, divisor: d, quotient: q, remainder: r }; },
+      () => { const d=rnd(2,7), q=rnd(4,12), r=rnd(1,d-1), t=d*q+r; return { text: `A coach has ${t} pieces of equipment to divide equally among ${d} teams. How many pieces does each team get, and how many are left over?`, divisor: d, quotient: q, remainder: r }; },
+      () => { const d=rnd(3,9), q=rnd(3,10), r=rnd(1,d-1), t=d*q+r; return { text: `Calvin has ${t} stickers to put in an album. Each page holds ${d} stickers. How many full pages will he fill, and how many stickers will go on the last page?`, divisor: d, quotient: q, remainder: r }; },
+      () => { const d=rnd(3,8), q=rnd(3,11), r=rnd(1,d-1), t=d*q+r; return { text: `There are ${t} crayons to hand out. Each student gets ${d} crayons. How many students get a full set, and how many crayons are left over?`, divisor: d, quotient: q, remainder: r }; },
+      () => { const d=rnd(4,9), q=rnd(3,10), r=rnd(1,d-1), t=d*q+r; return { text: `A bag holds ${t} grapes. Calvin puts ${d} grapes in each cup. How many cups can he fill completely, and how many grapes are left over?`, divisor: d, quotient: q, remainder: r }; },
+      () => { const d=rnd(3,7), q=rnd(4,12), r=rnd(1,d-1), t=d*q+r; return { text: `${t} kids want to play a board game that needs exactly ${d} players per team. How many complete teams can be made, and how many kids are left over?`, divisor: d, quotient: q, remainder: r }; },
+    ];
+
+    let ws5Data = [];
+    function generateWS5() {
+      document.getElementById('score5').textContent = '';
+      ws5Data = shuffle(REMAINDER_TEMPLATES).slice(0, 5).map(fn => fn());
+      document.getElementById('ws5').innerHTML = ws5Data.map((p, i) => `
+        <div class="word-problem" id="ws5p${i}">
+          <p>${p.text}</p>
+          <div class="wp-row" style="gap: 14px; flex-wrap: wrap;">
+            <span style="font-weight:700;">Each group gets:</span>
+            <input type="number" id="ws5q${i}" min="0" max="200" placeholder="?"
+              onkeydown="if(event.key==='Enter') checkAll(5)" style="width:60px;">
+            <span style="font-weight:700; margin-left: 8px;">Left over:</span>
+            <input type="number" id="ws5r${i}" min="0" max="20" placeholder="?"
+              onkeydown="if(event.key==='Enter') checkAll(5)" style="width:60px;">
+            <span class="result-msg" id="ws5m${i}"></span>
+          </div>
+        </div>
+      `).join('');
+    }
+
     // ── Check Logic ────────────────────────────────────────────────────────────
     function checkAll(ws) {
       if (ws === 1) checkGrid(ws1Data, 1, p => p.answer);
       if (ws === 2) checkGrid(ws2Data, 2, p => p.answer);
       if (ws === 3) checkGrid(ws3Data, 3, p => p.answer);
       if (ws === 4) checkWordProblems();
+      if (ws === 5) checkRemainders();
     }
 
     function checkGrid(data, wsNum, getAnswer) {
@@ -471,12 +527,46 @@
       scoreEl.className = 'ws-score' + (pct >= 80 ? ' good' : '');
     }
 
+    function checkRemainders() {
+      let correct = 0;
+      ws5Data.forEach((p, i) => {
+        const qInput = document.getElementById(`ws5q${i}`);
+        const rInput = document.getElementById(`ws5r${i}`);
+        const card   = document.getElementById(`ws5p${i}`);
+        const msg    = document.getElementById(`ws5m${i}`);
+        const qVal   = parseInt(qInput.value, 10);
+        const rVal   = parseInt(rInput.value, 10);
+        card.classList.remove('correct', 'wrong');
+        if (isNaN(qVal) && isNaN(rVal)) { msg.textContent = ''; return; }
+        const qOk = qVal === p.quotient;
+        const rOk = rVal === p.remainder;
+        if (qOk && rOk) {
+          card.classList.add('correct');
+          msg.textContent = '✓ Correct!';
+          msg.className = 'result-msg ok';
+          correct++;
+        } else {
+          card.classList.add('wrong');
+          const parts = [];
+          if (!qOk) parts.push(`each group gets ${p.quotient}`);
+          if (!rOk) parts.push(`${p.remainder} left over`);
+          msg.textContent = `✗ ${parts.join(', ')}`;
+          msg.className = 'result-msg err';
+        }
+      });
+      const scoreEl = document.getElementById('score5');
+      const pct = Math.round(100 * correct / ws5Data.length);
+      scoreEl.textContent = `${correct} / ${ws5Data.length} correct (${pct}%)`;
+      scoreEl.className = 'ws-score' + (pct >= 80 ? ' good' : '');
+    }
+
     // ── Init ───────────────────────────────────────────────────────────────────
     function generateAll() {
       generateWS1();
       generateWS2();
       generateWS3();
       generateWS4();
+      generateWS5();
     }
 
     generateAll();
