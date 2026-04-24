@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multiplication Table — Calvin's Study Site</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .times-hero {
+      padding: 36px 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .times-hero .big-icon { font-size: 4rem; }
+    .times-hero h1 { font-size: 2.2rem; font-weight: 900; color: var(--math); }
+    .times-hero p  { color: var(--muted); margin-top: 4px; }
+
+    .table-controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .table-controls label {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin-bottom: 40px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    table.times {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: 560px;
+      background: var(--card);
+      border-radius: var(--radius);
+      overflow: hidden;
+      font-family: 'Nunito', sans-serif;
+    }
+
+    table.times td, table.times th {
+      width: 52px;
+      height: 48px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+      border: 1px solid #E2E8F0;
+      transition: background 0.15s, color 0.15s, transform 0.1s;
+    }
+
+    /* Header row and column */
+    table.times .hdr {
+      background: var(--math);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 900;
+    }
+    table.times .hdr-corner {
+      background: #312E81;
+      color: #fff;
+      font-size: 1.3rem;
+    }
+
+    /* Diagonal (square numbers) */
+    table.times .sq {
+      background: #EEF2FF;
+      color: var(--math);
+      font-weight: 900;
+    }
+
+    /* Normal cells */
+    table.times .cell {
+      color: var(--text);
+      cursor: pointer;
+    }
+    table.times .cell:hover {
+      background: var(--math);
+      color: #fff;
+      transform: scale(1.12);
+      z-index: 2;
+      position: relative;
+      border-radius: 4px;
+    }
+
+    /* Highlight state */
+    table.times td.lit {
+      background: #FEF9C3 !important;
+      color: #92400E !important;
+    }
+    table.times td.lit-hdr {
+      background: #FDE68A !important;
+      color: #78350F !important;
+    }
+    table.times td.lit-ans {
+      background: #FBBF24 !important;
+      color: #1C1917 !important;
+      transform: scale(1.15);
+      position: relative;
+      z-index: 3;
+      border-radius: 4px;
+    }
+
+    /* Color banding by row (subtle) */
+    table.times tr:nth-child(even) .cell { background: #FAFBFF; }
+
+    .tips-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px 24px;
+      margin-bottom: 40px;
+    }
+    .tips-card h2 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 10px;
+    }
+    .tip {
+      background: #F8FAFC;
+      border-left: 3px solid var(--math);
+      border-radius: 6px;
+      padding: 10px 12px;
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+    .tip strong { color: var(--math); }
+
+    .print-btn {
+      display: none;
+    }
+    @media print {
+      .site-header, .times-hero p, .table-controls, .tips-card, .print-btn { display: none; }
+      body { background: white; }
+      .times-hero { padding: 10px 0 8px; }
+      .times-hero h1 { font-size: 1.4rem; }
+      table.times td, table.times th { width: 44px; height: 40px; font-size: 0.82rem; }
+      .table-wrap { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="site-logo">Calvin's <span>Study Site</span> 📚</a>
+      <nav class="nav-links">
+        <a href="math.html"           class="nav-link math active">🔢 Math</a>
+        <a href="ela.html"            class="nav-link ela">📖 ELA</a>
+        <a href="science.html"        class="nav-link sci">🔬 Science</a>
+        <a href="social-studies.html" class="nav-link ss">🌍 Social Studies</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <div class="times-hero">
+      <div class="big-icon">✖️</div>
+      <div>
+        <h1>Multiplication Table</h1>
+        <p>Click any cell to highlight that row and column. Click a header number to highlight its whole table.</p>
+      </div>
+    </div>
+
+    <div class="table-controls">
+      <button class="btn btn-math btn-sm" onclick="clearHighlight()">Clear Highlight</button>
+      <button class="btn btn-gray btn-sm" onclick="window.print()">🖨️ Print</button>
+      <a href="math.html" class="btn btn-gray btn-sm">← Back to Math</a>
+      <a href="division.html" class="btn btn-outline btn-sm" style="border-color:var(--math);color:var(--math);">➗ Division Worksheets</a>
+    </div>
+
+    <div class="table-wrap">
+      <table class="times" id="timesTable">
+        <!-- built by JS -->
+      </table>
+    </div>
+
+    <div class="tips-card">
+      <h2>💡 Tricks to Remember Your Facts</h2>
+      <div class="tips-grid">
+        <div class="tip"><strong>× 1:</strong> Any number times 1 equals itself. 1 × 7 = 7.</div>
+        <div class="tip"><strong>× 2:</strong> Double the number. 2 × 8 = 16 (think 8 + 8).</div>
+        <div class="tip"><strong>× 3:</strong> Double, then add one more group. 3 × 6 = 6+6+6 = 18.</div>
+        <div class="tip"><strong>× 4:</strong> Double twice. 4 × 7 = double 7 (14), double again (28).</div>
+        <div class="tip"><strong>× 5:</strong> Count by 5s, or halve the number and add a zero. 5 × 8 = 40.</div>
+        <div class="tip"><strong>× 6:</strong> If the other number is even, the answer ends in that number. 6 × 4 = 24.</div>
+        <div class="tip"><strong>× 7:</strong> 7 × 8 = 56 — say "5, 6, 7, 8" to remember 5×6=7×8!</div>
+        <div class="tip"><strong>× 8:</strong> Double three times. 8 × 6 = double 6 (12) → double (24) → double (48).</div>
+        <div class="tip"><strong>× 9:</strong> Hold up 10 fingers. Fold down the finger for the number you're multiplying by. Fingers left = tens digit, fingers right = ones digit. 9×7: fold finger 7, left=6, right=3 → 63.</div>
+        <div class="tip"><strong>× 10:</strong> Just add a zero! 10 × 7 = 70.</div>
+        <div class="tip"><strong>× 11:</strong> Up to 9: repeat the digit. 11×7=77. For 11×11=121, 11×12=132.</div>
+        <div class="tip"><strong>× 12:</strong> Multiply by 10 and add two more groups. 12×8 = 80+16 = 96.</div>
+        <div class="tip"><strong>Flip it!</strong> 6 × 9 = 9 × 6 = 54. Order doesn't matter — learn one, get one free.</div>
+        <div class="tip"><strong>Square numbers</strong> (blue cells) are on the diagonal: 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144.</div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    const SIZE = 12;
+    const table = document.getElementById('timesTable');
+
+    function buildTable() {
+      let html = '';
+
+      // Header row
+      html += '<tr>';
+      html += '<td class="hdr hdr-corner">×</td>';
+      for (let c = 1; c <= SIZE; c++) {
+        html += `<td class="hdr" onclick="highlightFactor(${c})" style="cursor:pointer;" title="Highlight ×${c}">${c}</td>`;
+      }
+      html += '</tr>';
+
+      // Data rows
+      for (let r = 1; r <= SIZE; r++) {
+        html += '<tr>';
+        html += `<td class="hdr" onclick="highlightFactor(${r})" style="cursor:pointer;" title="Highlight ×${r}">${r}</td>`;
+        for (let c = 1; c <= SIZE; c++) {
+          const val = r * c;
+          const cls = r === c ? 'sq' : 'cell';
+          html += `<td class="${cls}" data-row="${r}" data-col="${c}" onclick="highlightCell(${r},${c})">${val}</td>`;
+        }
+        html += '</tr>';
+      }
+
+      table.innerHTML = html;
+    }
+
+    function clearHighlight() {
+      table.querySelectorAll('td').forEach(td => {
+        td.classList.remove('lit', 'lit-hdr', 'lit-ans');
+      });
+    }
+
+    function highlightCell(row, col) {
+      clearHighlight();
+      // Highlight header for this row and column
+      const headers = table.querySelectorAll('.hdr');
+      // Row headers are at position 0 of each row (tr index = row)
+      table.querySelectorAll('tr').forEach((tr, ri) => {
+        if (ri === row) tr.cells[0].classList.add('lit-hdr');
+      });
+      // Column header = first row, cell at col index
+      table.rows[0].cells[col].classList.add('lit-hdr');
+
+      // Highlight all cells in the same row and column
+      table.querySelectorAll(`td[data-row="${row}"]`).forEach(td => td.classList.add('lit'));
+      table.querySelectorAll(`td[data-col="${col}"]`).forEach(td => td.classList.add('lit'));
+
+      // Highlight the answer cell
+      const answerCell = table.querySelector(`td[data-row="${row}"][data-col="${col}"]`);
+      if (answerCell) {
+        answerCell.classList.remove('lit');
+        answerCell.classList.add('lit-ans');
+      }
+    }
+
+    function highlightFactor(n) {
+      clearHighlight();
+      // Highlight entire row n and entire column n
+      table.querySelectorAll(`td[data-row="${n}"]`).forEach(td => td.classList.add('lit'));
+      table.querySelectorAll(`td[data-col="${n}"]`).forEach(td => td.classList.add('lit'));
+
+      // Highlight the row header and column header
+      table.querySelectorAll('tr').forEach((tr, ri) => {
+        if (ri === n) tr.cells[0].classList.add('lit-hdr');
+      });
+      table.rows[0].cells[n].classList.add('lit-hdr');
+
+      // Highlight the square (n×n)
+      const sq = table.querySelector(`td[data-row="${n}"][data-col="${n}"]`);
+      if (sq) { sq.classList.remove('lit'); sq.classList.add('lit-ans'); }
+    }
+
+    buildTable();
+  </script>
+
+</body>
+</html>
