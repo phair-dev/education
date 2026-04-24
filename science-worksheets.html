@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Science Worksheets — Calvin's Study Site</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    :root { --sci-dark: #5B21B6; }
+
+    .ws-section {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .ws-section h2 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      color: var(--sci);
+    }
+    .ws-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+    .ws-score {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 14px;
+      min-height: 20px;
+    }
+    .ws-score.good { color: var(--green); }
+    .ws-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 16px; }
+
+    /* Question cards */
+    .sci-problem {
+      background: #F8FAFC;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin-bottom: 14px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .sci-problem.correct { border-color: var(--green); background: #DCFCE7; }
+    .sci-problem.wrong   { border-color: var(--red);   background: #FEE2E2; }
+
+    .sci-q {
+      font-size: 0.97rem;
+      font-weight: 700;
+      line-height: 1.55;
+      margin-bottom: 12px;
+    }
+    .sci-scenario {
+      font-size: 0.88rem;
+      color: var(--muted);
+      font-style: italic;
+      background: #EDE9FE;
+      border-left: 3px solid var(--sci);
+      border-radius: 4px;
+      padding: 8px 12px;
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+
+    .sci-options {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .sci-opt {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 9px 13px;
+      border-radius: 8px;
+      border: 2px solid var(--border);
+      background: white;
+      font-family: inherit;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      text-align: left;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .sci-opt:hover:not(:disabled) {
+      border-color: var(--sci);
+      background: #F5F3FF;
+    }
+    .sci-opt.selected {
+      border-color: var(--sci);
+      background: #EDE9FE;
+      color: var(--sci-dark);
+    }
+    .sci-opt.correct {
+      border-color: var(--green);
+      background: #DCFCE7;
+      color: #166534;
+    }
+    .sci-opt.wrong {
+      border-color: var(--red);
+      background: #FEE2E2;
+      color: #991B1B;
+    }
+    .sci-opt.reveal {
+      border-color: var(--green);
+      background: #DCFCE7;
+      color: #166534;
+    }
+    .sci-opt:disabled { cursor: default; }
+    .opt-letter {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--border);
+      font-weight: 900;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .sci-opt.selected  .opt-letter { background: var(--sci);   color: #fff; }
+    .sci-opt.correct   .opt-letter { background: var(--green); color: #fff; }
+    .sci-opt.wrong     .opt-letter { background: var(--red);   color: #fff; }
+    .sci-opt.reveal    .opt-letter { background: var(--green); color: #fff; }
+
+    .result-note {
+      font-size: 0.84rem;
+      font-weight: 700;
+      margin-top: 10px;
+      display: none;
+    }
+    .result-note.show { display: block; }
+    .result-note.ok  { color: var(--green); }
+    .result-note.err { color: var(--red); }
+
+    .page-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    /* tool grid for WS1 */
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="site-logo">Calvin's <span>Study Site</span> 📚</a>
+      <nav class="nav-links">
+        <a href="math.html"           class="nav-link math">🔢 Math</a>
+        <a href="ela.html"            class="nav-link ela">📖 ELA</a>
+        <a href="science.html"        class="nav-link sci active">🔬 Science</a>
+        <a href="social-studies.html" class="nav-link ss">🌍 Social Studies</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <div class="subject-hero">
+      <div class="big-icon">🔬</div>
+      <div>
+        <h1 style="color: var(--sci);">Science Worksheets</h1>
+        <p>Practice scientific tools, model limitations, forming a hypothesis, and identifying variables</p>
+      </div>
+    </div>
+
+    <div class="page-actions">
+      <button class="btn btn-sm" style="background:var(--sci);color:#fff;" onclick="resetAll()">🔄 Reset All</button>
+      <a href="science.html" class="btn btn-gray btn-sm">← Back to Science</a>
+      <a href="quiz.html?subject=science&topic=Scientific+Practices" class="btn btn-outline btn-sm" style="border-color:var(--sci);color:var(--sci);">Take a Quiz →</a>
+    </div>
+
+    <!-- ── Worksheet 1: Scientific Tools ──────────────────────────────────── -->
+    <div class="ws-section">
+      <h2>🔧 Worksheet 1 — Choosing the Right Tool</h2>
+      <p class="ws-desc">Read what the scientist needs to measure or observe. Pick the BEST tool for the job.</p>
+
+      <div class="study-notes" style="margin-bottom: 18px;">
+        <h4>Tool Quick Reference</h4>
+        <ul>
+          <li><strong>Ruler / Meter stick:</strong> measures length, width, height</li>
+          <li><strong>Thermometer:</strong> measures temperature (°C or °F)</li>
+          <li><strong>Balance / Pan balance:</strong> measures mass by comparing two objects</li>
+          <li><strong>Graduated cylinder / Beaker:</strong> measures liquid volume (mL or L)</li>
+          <li><strong>Spring scale:</strong> measures force or weight (Newtons)</li>
+          <li><strong>Hand lens (magnifying glass):</strong> makes small objects look bigger</li>
+          <li><strong>Stopwatch:</strong> measures time (seconds, minutes)</li>
+        </ul>
+      </div>
+
+      <div class="ws-score" id="score1"></div>
+      <div class="tool-grid" id="ws1"></div>
+      <div class="ws-row">
+        <button class="btn btn-sm" style="background:var(--sci);color:#fff;" onclick="checkWS(1)">Check Answers</button>
+        <button class="btn btn-gray btn-sm" onclick="resetWS(1)">Reset</button>
+      </div>
+    </div>
+
+    <!-- ── Worksheet 2: Model Limitations ────────────────────────────────── -->
+    <div class="ws-section">
+      <h2>🗺️ Worksheet 2 — Model Limitations</h2>
+      <p class="ws-desc">A <strong>model</strong> is a smaller or simpler version of something real. Every model has limitations — things it cannot do or show perfectly. Pick the answer that best describes the model's limitation.</p>
+
+      <div class="study-notes" style="margin-bottom: 18px;">
+        <h4>What Makes Something a Limitation?</h4>
+        <ul>
+          <li><strong>Size:</strong> a model is almost never the same size as the real thing</li>
+          <li><strong>Materials:</strong> a model is made of different stuff than the real thing</li>
+          <li><strong>Function:</strong> a model usually can't do what the real thing does (pump blood, erupt lava, etc.)</li>
+          <li><strong>Scale:</strong> distances and proportions aren't exact</li>
+          <li>A strength of a model is NOT a limitation — be careful not to pick an answer that describes something the model does well</li>
+        </ul>
+      </div>
+
+      <div class="ws-score" id="score2"></div>
+      <div id="ws2"></div>
+      <div class="ws-row">
+        <button class="btn btn-sm" style="background:var(--sci);color:#fff;" onclick="checkWS(2)">Check Answers</button>
+        <button class="btn btn-gray btn-sm" onclick="resetWS(2)">Reset</button>
+      </div>
+    </div>
+
+    <!-- ── Worksheet 3: Hypothesis ────────────────────────────────────────── -->
+    <div class="ws-section">
+      <h2>💡 Worksheet 3 — Writing a Hypothesis</h2>
+      <p class="ws-desc">A <strong>hypothesis</strong> is a testable prediction — a guess about what will happen and why. The best hypotheses follow an <em>If… then… because…</em> pattern and can be proven right or wrong through an experiment.</p>
+
+      <div class="study-notes" style="margin-bottom: 18px;">
+        <h4>What Makes a Good Hypothesis?</h4>
+        <ul>
+          <li><strong>Testable:</strong> you can actually do an experiment to check it</li>
+          <li><strong>Specific:</strong> it mentions what you're changing AND what you expect to happen</li>
+          <li><strong>If… then… format:</strong> "If I add more fertilizer, then the plant will grow taller."</li>
+          <li><strong>NOT a fact:</strong> "Water is wet" is not a hypothesis — there's nothing to test</li>
+          <li><strong>NOT a question:</strong> "Will plants grow faster?" is a question, not a hypothesis</li>
+          <li><strong>Can be wrong!</strong> A hypothesis doesn't have to be correct — it just has to be testable</li>
+        </ul>
+      </div>
+
+      <div class="ws-score" id="score3"></div>
+      <div id="ws3"></div>
+      <div class="ws-row">
+        <button class="btn btn-sm" style="background:var(--sci);color:#fff;" onclick="checkWS(3)">Check Answers</button>
+        <button class="btn btn-gray btn-sm" onclick="resetWS(3)">Reset</button>
+      </div>
+    </div>
+
+    <!-- ── Worksheet 4: Variables ─────────────────────────────────────────── -->
+    <div class="ws-section">
+      <h2>🔀 Worksheet 4 — Identifying Variables</h2>
+      <p class="ws-desc">In a fair experiment, scientists change one thing at a time. Read each experiment and identify the variables.</p>
+
+      <div class="study-notes" style="margin-bottom: 18px;">
+        <h4>The Three Types of Variables</h4>
+        <ul>
+          <li><strong>Independent variable:</strong> the ONE thing the scientist changes on purpose. "What am I testing?"</li>
+          <li><strong>Dependent variable:</strong> what the scientist measures or observes as a result. "What do I record?"</li>
+          <li><strong>Controlled variables:</strong> everything kept the same so the test is fair. "What stays the same?"</li>
+          <li><strong>Trick:</strong> the independent variable goes on the X-axis of a graph; the dependent goes on the Y-axis</li>
+        </ul>
+      </div>
+
+      <div class="ws-score" id="score4"></div>
+      <div id="ws4"></div>
+      <div class="ws-row">
+        <button class="btn btn-sm" style="background:var(--sci);color:#fff;" onclick="checkWS(4)">Check Answers</button>
+        <button class="btn btn-gray btn-sm" onclick="resetWS(4)">Reset</button>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // ── Question Data ──────────────────────────────────────────────────────────
+
+    const WS1 = [
+      { q: "A student wants to find out how long a caterpillar is.", options: ["Thermometer", "Ruler", "Graduated cylinder", "Spring scale"], correct: 1, note: "A ruler measures length." },
+      { q: "Maya needs to measure the temperature of water in a beaker.", options: ["Ruler", "Balance", "Stopwatch", "Thermometer"], correct: 3, note: "A thermometer measures temperature." },
+      { q: "A scientist wants to measure exactly 75 mL of liquid for an experiment.", options: ["Graduated cylinder", "Ruler", "Hand lens", "Stopwatch"], correct: 0, note: "A graduated cylinder measures liquid volume in milliliters." },
+      { q: "Liam wants to compare the mass of a rock and a piece of clay to see which is heavier.", options: ["Spring scale", "Stopwatch", "Balance", "Thermometer"], correct: 2, note: "A balance (pan balance) compares the mass of two objects." },
+      { q: "Sofia needs to find out how many seconds it takes for a ball to roll down a ramp.", options: ["Ruler", "Stopwatch", "Thermometer", "Hand lens"], correct: 1, note: "A stopwatch measures time in seconds." },
+      { q: "A student wants to look at the tiny parts of an insect wing up close.", options: ["Balance", "Hand lens", "Graduated cylinder", "Ruler"], correct: 1, note: "A hand lens (magnifying glass) makes small objects appear larger." },
+      { q: "A scientist wants to measure how much force it takes to pull a book across a table.", options: ["Ruler", "Thermometer", "Spring scale", "Balance"], correct: 2, note: "A spring scale measures force in Newtons." },
+      { q: "Calvin measures the width of his science textbook for a report.", options: ["Thermometer", "Stopwatch", "Balance", "Ruler"], correct: 3, note: "A ruler measures length and width." },
+      { q: "A student needs to measure how much rain collected in a cup — in milliliters.", options: ["Thermometer", "Graduated cylinder", "Spring scale", "Hand lens"], correct: 1, note: "A graduated cylinder measures liquid volume." },
+      { q: "The outside temperature is needed for a weather observation record.", options: ["Thermometer", "Balance", "Stopwatch", "Ruler"], correct: 0, note: "A thermometer measures temperature — perfect for weather observations." },
+    ];
+
+    const WS2 = [
+      {
+        scenario: "Students build a model volcano out of clay. They pour baking soda and vinegar inside to simulate an eruption.",
+        q: "What is a LIMITATION of this model?",
+        options: [
+          "The clay volcano is much smaller than a real volcano.",
+          "The baking soda and vinegar react just like real lava.",
+          "Clay is the same material that real volcanoes are made of.",
+          "The model erupts just as powerfully as a real volcano."
+        ],
+        correct: 0,
+        note: "Size is a major limitation — the clay model is far smaller than a real volcano. Real lava is molten rock, not a chemical reaction, so options B, C, and D describe things that are NOT true (not limitations we'd state honestly)."
+      },
+      {
+        scenario: "A student makes a model of the solar system using different-sized balls for the planets and hangs them from strings in the classroom.",
+        q: "What is a LIMITATION of this model?",
+        options: [
+          "The model shows that planets orbit the Sun.",
+          "The balls are much smaller than the real planets.",
+          "The model correctly shows the order of the planets.",
+          "The model helps students see that planets have different sizes."
+        ],
+        correct: 1,
+        note: "The balls are much smaller than real planets — that's a limitation. Options A, C, and D describe things the model does correctly (strengths, not limitations)."
+      },
+      {
+        scenario: "A plastic model of the human heart sits on the teacher's desk. Students can open it up and see the four chambers inside.",
+        q: "What is a LIMITATION of this model?",
+        options: [
+          "The model shows the four chambers of the heart.",
+          "The model is about the same size as a real heart.",
+          "The model cannot pump blood the way a real heart does.",
+          "The model helps students learn the parts of the heart."
+        ],
+        correct: 2,
+        note: "The plastic model can't actually pump blood — that's a key limitation. A model can show structure but usually can't perform the real function."
+      },
+      {
+        scenario: "A student draws a map of the school on a piece of paper to show a new student how to find the library.",
+        q: "What is a LIMITATION of this map?",
+        options: [
+          "The map shows where important rooms are located.",
+          "The map is much smaller than the actual school building.",
+          "The map uses symbols to represent different rooms.",
+          "The map shows the path from the entrance to the library."
+        ],
+        correct: 1,
+        note: "The map is much smaller than the real school — you couldn't walk through the map. Shrinking down to fit on paper is a classic model limitation."
+      },
+      {
+        scenario: "A student builds a model of a bird's wing using cardboard and paper feathers to show how wings help birds fly.",
+        q: "What is a LIMITATION of this model?",
+        options: [
+          "The model shows the basic shape of a bird's wing.",
+          "The cardboard wing cannot flap and generate real lift like a real bird wing.",
+          "The model has feather-like pieces attached to it.",
+          "The model is used to explain how wings work."
+        ],
+        correct: 1,
+        note: "Cardboard and paper can't generate real lift the way actual feathers and muscles do — the model can't perform the real function of flying."
+      },
+      {
+        scenario: "A science class builds a model of Earth's layers using different colors of clay — a small ball for the inner core, wrapped in layers for the outer core, mantle, and crust.",
+        q: "Which of the following is a LIMITATION of this clay model?",
+        options: [
+          "The model shows that Earth has multiple layers.",
+          "The model uses different colors to show different layers.",
+          "The clay layers cannot show the extreme heat and pressure inside the real Earth.",
+          "The model helps students understand that the crust is the outermost layer."
+        ],
+        correct: 2,
+        note: "Clay can't be thousands of degrees or under millions of atmospheres of pressure like the real Earth's layers. That's a limitation of the model's materials and function."
+      },
+    ];
+
+    const WS3 = [
+      {
+        scenario: "Maya wants to know if plants grow taller when they receive more hours of sunlight each day.",
+        q: "Which of the following is the BEST hypothesis for Maya's experiment?",
+        options: [
+          "Plants need sunlight.",
+          "If a plant receives more hours of sunlight each day, then it will grow taller.",
+          "Will more sunlight make plants grow?",
+          "Some plants grow faster than others."
+        ],
+        correct: 1,
+        note: "Option B is testable and specific — it says exactly what is being changed (hours of sunlight) and what is expected to happen (grow taller). Option A is a fact, C is a question, and D is too vague."
+      },
+      {
+        scenario: "Liam drops different balls (rubber, wooden, and plastic) from the same height onto the floor. He wants to find out which type of ball bounces highest.",
+        q: "Which is the BEST hypothesis?",
+        options: [
+          "Balls bounce when you drop them.",
+          "Rubber balls are better than wooden balls.",
+          "If a ball is made of rubber, then it will bounce higher than wooden or plastic balls.",
+          "All balls bounce the same height."
+        ],
+        correct: 2,
+        note: "Option C is a clear, testable prediction that names the independent variable (ball material) and predicts the outcome. The others are either too vague, just a fact, or make a claim without a reason to test."
+      },
+      {
+        scenario: "Sofia wonders if the temperature of water affects how quickly a sugar cube dissolves.",
+        q: "Which is the BEST hypothesis for Sofia's experiment?",
+        options: [
+          "Sugar cubes dissolve in water.",
+          "Hot water and cold water are different temperatures.",
+          "I think hot water is better.",
+          "If the water temperature is higher, then a sugar cube will dissolve faster."
+        ],
+        correct: 3,
+        note: "Option D names what changes (water temperature) and predicts the result (faster dissolving). Options A and B are facts, and C is too vague to test."
+      },
+      {
+        scenario: "A student wants to find out if the color of a bird feeder affects how many birds visit it.",
+        q: "Which is the BEST hypothesis?",
+        options: [
+          "If the feeder is red, then more birds will visit it than feeders of other colors.",
+          "Birds like bird feeders.",
+          "Do birds have a favorite color?",
+          "Bird feeders come in many colors."
+        ],
+        correct: 0,
+        note: "Option A is specific and testable — it states exactly what is being changed (feeder color) and what is predicted (more birds visiting red feeders). The others are either facts or questions."
+      },
+      {
+        scenario: "Tyler is testing whether adding fertilizer to soil makes grass grow faster. He sets up two pots — one with fertilizer, one without — and measures height each week.",
+        q: "Which is the BEST hypothesis for Tyler's experiment?",
+        options: [
+          "Fertilizer is good for plants.",
+          "Grass will grow.",
+          "If fertilizer is added to the soil, then the grass will grow faster than grass without fertilizer.",
+          "Grass needs water and sunlight."
+        ],
+        correct: 2,
+        note: "Option C follows the If-then format, names the independent variable (adding fertilizer), and predicts the result (grows faster). The other options are too general or just facts."
+      },
+    ];
+
+    const WS4 = [
+      {
+        scenario: "Maya gives Plant A 1 cup of water per day and Plant B 3 cups of water per day. Both plants are the same type, in the same size pot, and placed in the same spot. She measures how tall each plant grows after two weeks.",
+        q: "What is the INDEPENDENT variable (what Maya changes on purpose)?",
+        options: [
+          "The height of the plants after two weeks",
+          "The type of plant used",
+          "The amount of water each plant receives",
+          "The amount of sunlight each plant gets"
+        ],
+        correct: 2,
+        note: "Maya changes the amount of water — that's the one thing she does differently between the two plants, making it the independent variable."
+      },
+      {
+        scenario: "Maya gives Plant A 1 cup of water per day and Plant B 3 cups of water per day. She measures how tall each plant grows after two weeks.",
+        q: "What is the DEPENDENT variable (what Maya measures)?",
+        options: [
+          "The amount of water each plant gets",
+          "The type of soil in each pot",
+          "The size of the pot",
+          "The height of the plants after two weeks"
+        ],
+        correct: 3,
+        note: "The dependent variable is what Maya records as a result — she measures plant height. It 'depends' on how much water was given."
+      },
+      {
+        scenario: "Maya gives Plant A 1 cup of water per day and Plant B 3 cups of water per day. Both plants are the same type, in the same size pot, placed in the same spot.",
+        q: "Which of these is a CONTROLLED variable (kept the same to make it fair)?",
+        options: [
+          "The amount of water each plant receives",
+          "The height of the plants",
+          "The type of plant used",
+          "The number of weeks Maya waited"
+        ],
+        correct: 2,
+        note: "To make the experiment fair, Maya uses the same type of plant in both pots. If she used different plants, she wouldn't know if height differences were from water or from the plant type."
+      },
+      {
+        scenario: "Liam tests three balls — rubber, wooden, and plastic — by dropping each from exactly 1 meter high and measuring how high each one bounces.",
+        q: "What is the INDEPENDENT variable in Liam's experiment?",
+        options: [
+          "The height each ball bounces",
+          "The type of ball material (rubber, wooden, plastic)",
+          "The height from which balls are dropped",
+          "The floor surface"
+        ],
+        correct: 1,
+        note: "Liam is testing different ball materials — that's the one thing he changes. The material is the independent variable."
+      },
+      {
+        scenario: "Liam tests rubber, wooden, and plastic balls by dropping each from exactly 1 meter high and measuring bounce height.",
+        q: "What is the DEPENDENT variable?",
+        options: [
+          "The type of ball material",
+          "The 1-meter drop height",
+          "The height each ball bounces",
+          "The type of floor"
+        ],
+        correct: 2,
+        note: "Liam measures the bounce height — that's the result of the experiment. It 'depends' on what type of ball was dropped."
+      },
+      {
+        scenario: "Sofia puts four identical cups of water at different temperatures — cold, room temperature, warm, and hot. She drops one sugar cube into each and times how long it takes to fully dissolve.",
+        q: "What is the INDEPENDENT variable in Sofia's experiment?",
+        options: [
+          "How long the sugar cube takes to dissolve",
+          "The size of the sugar cube",
+          "The size of the cup",
+          "The temperature of the water"
+        ],
+        correct: 3,
+        note: "Sofia changes the water temperature between cups — that's her independent variable. Everything else (cup size, sugar cube size) stays the same."
+      },
+      {
+        scenario: "Sofia's experiment tests whether water temperature affects how fast sugar dissolves. She times each cup.",
+        q: "Which of these would be a CONTROLLED variable in Sofia's experiment?",
+        options: [
+          "The temperature of the water in each cup",
+          "How long the sugar cube takes to dissolve",
+          "The size of the sugar cube used in each cup",
+          "Whether the water has ice in it"
+        ],
+        correct: 2,
+        note: "To keep the test fair, Sofia must use the same size sugar cube in each cup. If one cup got a bigger cube, she couldn't be sure the temperature caused any difference."
+      },
+      {
+        scenario: "A student tests whether a ramp's steepness affects how far a toy car travels after rolling down. She uses the same car and the same flat floor, but changes the angle of the ramp.",
+        q: "What is the DEPENDENT variable?",
+        options: [
+          "The angle (steepness) of the ramp",
+          "The type of toy car",
+          "The distance the car travels after leaving the ramp",
+          "The surface of the ramp"
+        ],
+        correct: 2,
+        note: "The student measures how far the car travels — that's the result that depends on the ramp angle. Distance traveled is the dependent variable."
+      },
+    ];
+
+    // ── Render ─────────────────────────────────────────────────────────────────
+
+    const LETTERS = ['A', 'B', 'C', 'D'];
+
+    function renderWS(wsNum, data, containerEl) {
+      const isGrid = wsNum === 1;
+      containerEl.innerHTML = data.map((item, qi) => {
+        const opts = item.options.map((o, oi) => `
+          <button class="sci-opt" id="ws${wsNum}q${qi}o${oi}"
+            onclick="selectOption(${wsNum}, ${qi}, ${oi}, ${item.options.length})">
+            <span class="opt-letter">${LETTERS[oi]}</span>
+            <span>${o}</span>
+          </button>
+        `).join('');
+
+        const scenario = item.scenario
+          ? `<div class="sci-scenario">${item.scenario}</div>` : '';
+
+        return `
+          <div class="sci-problem" id="ws${wsNum}p${qi}">
+            ${scenario}
+            <div class="sci-q">${qi + 1}. ${item.q}</div>
+            <div class="sci-options">${opts}</div>
+            <div class="result-note" id="ws${wsNum}n${qi}"></div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectOption(wsNum, qi, oi, total) {
+      // Clear previously selected in this question
+      for (let i = 0; i < total; i++) {
+        const btn = document.getElementById(`ws${wsNum}q${qi}o${i}`);
+        if (btn && !btn.disabled) btn.classList.remove('selected');
+      }
+      const chosen = document.getElementById(`ws${wsNum}q${qi}o${oi}`);
+      if (chosen && !chosen.disabled) chosen.classList.add('selected');
+    }
+
+    // ── Check ──────────────────────────────────────────────────────────────────
+
+    function checkWS(wsNum) {
+      const datasets = { 1: WS1, 2: WS2, 3: WS3, 4: WS4 };
+      const data = datasets[wsNum];
+      let correct = 0;
+
+      data.forEach((item, qi) => {
+        const card   = document.getElementById(`ws${wsNum}p${qi}`);
+        const note   = document.getElementById(`ws${wsNum}n${qi}`);
+        let selected = -1;
+
+        // Disable all options and find selected
+        for (let oi = 0; oi < item.options.length; oi++) {
+          const btn = document.getElementById(`ws${wsNum}q${qi}o${oi}`);
+          if (!btn) continue;
+          btn.disabled = true;
+          if (btn.classList.contains('selected')) selected = oi;
+        }
+
+        card.classList.remove('correct', 'wrong');
+        note.classList.remove('show', 'ok', 'err');
+
+        if (selected === -1) {
+          // No answer chosen — reveal correct
+          const correctBtn = document.getElementById(`ws${wsNum}q${qi}o${item.correct}`);
+          if (correctBtn) correctBtn.classList.add('reveal');
+          note.textContent = `No answer selected. The answer is ${LETTERS[item.correct]}.`;
+          note.classList.add('show', 'err');
+          return;
+        }
+
+        const correctBtn = document.getElementById(`ws${wsNum}q${qi}o${item.correct}`);
+        if (selected === item.correct) {
+          card.classList.add('correct');
+          const btn = document.getElementById(`ws${wsNum}q${qi}o${selected}`);
+          btn.classList.remove('selected');
+          btn.classList.add('correct');
+          note.textContent = `✓ Correct! ${item.note}`;
+          note.classList.add('show', 'ok');
+          correct++;
+        } else {
+          card.classList.add('wrong');
+          const wrongBtn = document.getElementById(`ws${wsNum}q${qi}o${selected}`);
+          wrongBtn.classList.remove('selected');
+          wrongBtn.classList.add('wrong');
+          if (correctBtn) correctBtn.classList.add('reveal');
+          note.textContent = `✗ The correct answer is ${LETTERS[item.correct]}. ${item.note}`;
+          note.classList.add('show', 'err');
+        }
+      });
+
+      const scoreEl = document.getElementById(`score${wsNum}`);
+      const pct = Math.round(100 * correct / data.length);
+      scoreEl.textContent = `${correct} / ${data.length} correct (${pct}%)`;
+      scoreEl.className = 'ws-score' + (pct >= 80 ? ' good' : '');
+    }
+
+    // ── Reset ──────────────────────────────────────────────────────────────────
+
+    function resetWS(wsNum) {
+      const datasets = { 1: WS1, 2: WS2, 3: WS3, 4: WS4 };
+      const containers = { 1: document.getElementById('ws1'), 2: document.getElementById('ws2'), 3: document.getElementById('ws3'), 4: document.getElementById('ws4') };
+      document.getElementById(`score${wsNum}`).textContent = '';
+      renderWS(wsNum, datasets[wsNum], containers[wsNum]);
+    }
+
+    function resetAll() { resetWS(1); resetWS(2); resetWS(3); resetWS(4); }
+
+    // ── Init ───────────────────────────────────────────────────────────────────
+
+    renderWS(1, WS1, document.getElementById('ws1'));
+    renderWS(2, WS2, document.getElementById('ws2'));
+    renderWS(3, WS3, document.getElementById('ws3'));
+    renderWS(4, WS4, document.getElementById('ws4'));
+  </script>
+
+</body>
+</html>
