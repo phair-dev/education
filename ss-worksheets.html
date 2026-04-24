@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Social Studies Skills Worksheets — Calvin's Study Site</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .ws-section {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .ws-section h2 { font-size: 1.15rem; font-weight: 800; margin-bottom: 6px; color: var(--ss); }
+    .ws-desc { font-size: 0.9rem; color: var(--muted); margin-bottom: 18px; }
+    .ws-score { font-size: 0.9rem; font-weight: 700; color: var(--muted); margin-bottom: 14px; min-height: 20px; }
+    .ws-score.good { color: var(--green); }
+    .ws-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 16px; }
+
+    .sci-problem {
+      background: #F8FAFC;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin-bottom: 14px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .sci-problem.correct { border-color: var(--green); background: #DCFCE7; }
+    .sci-problem.wrong   { border-color: var(--red);   background: #FEE2E2; }
+
+    .source-box {
+      font-size: 0.91rem;
+      line-height: 1.6;
+      background: #FFFBEB;
+      border-left: 3px solid var(--ss);
+      border-radius: 6px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+    }
+    .source-label {
+      font-size: 0.72rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ss);
+      margin-bottom: 5px;
+    }
+
+    .sci-q { font-size: 0.97rem; font-weight: 700; line-height: 1.55; margin-bottom: 12px; }
+    .sci-options { display: flex; flex-direction: column; gap: 7px; }
+    .sci-opt {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 9px 13px; border-radius: 8px;
+      border: 2px solid var(--border); background: white;
+      font-family: inherit; font-size: 0.92rem; font-weight: 600;
+      color: var(--text); cursor: pointer; text-align: left;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .sci-opt:hover:not(:disabled) { border-color: var(--ss); background: #FFFBEB; }
+    .sci-opt.selected { border-color: var(--ss); background: #FEF3C7; color: #78350F; }
+    .sci-opt.correct  { border-color: var(--green); background: #DCFCE7; color: #166534; }
+    .sci-opt.wrong    { border-color: var(--red);   background: #FEE2E2; color: #991B1B; }
+    .sci-opt.reveal   { border-color: var(--green); background: #DCFCE7; color: #166534; }
+    .sci-opt:disabled { cursor: default; }
+
+    .opt-letter {
+      display: flex; align-items: center; justify-content: center;
+      width: 26px; height: 26px; border-radius: 50%;
+      background: var(--border); font-weight: 900; font-size: 0.8rem;
+      flex-shrink: 0; margin-top: 1px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .sci-opt.selected .opt-letter { background: var(--ss);   color: #fff; }
+    .sci-opt.correct  .opt-letter { background: var(--green); color: #fff; }
+    .sci-opt.wrong    .opt-letter { background: var(--red);   color: #fff; }
+    .sci-opt.reveal   .opt-letter { background: var(--green); color: #fff; }
+
+    .result-note { font-size: 0.84rem; font-weight: 700; margin-top: 10px; display: none; }
+    .result-note.show { display: block; }
+    .result-note.ok  { color: var(--green); }
+    .result-note.err { color: var(--red); }
+
+    .page-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 28px; }
+
+    /* Timeline visual */
+    .timeline-visual {
+      background: #FFFBEB;
+      border: 2px solid #FDE68A;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      overflow-x: auto;
+    }
+    .timeline-bar {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      position: relative;
+      padding: 8px 0;
+    }
+    .tl-event {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      min-width: 90px;
+      position: relative;
+    }
+    .tl-event::before {
+      content: '';
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      right: -50%;
+      height: 3px;
+      background: var(--ss);
+      z-index: 0;
+    }
+    .tl-event:last-child::before { display: none; }
+    .tl-dot {
+      width: 14px; height: 14px;
+      background: var(--ss); border-radius: 50%;
+      position: relative; z-index: 1;
+      flex-shrink: 0;
+    }
+    .tl-year { font-size: 0.78rem; font-weight: 900; color: var(--ss); margin-top: 4px; }
+    .tl-label { font-size: 0.72rem; color: var(--text); text-align: center; margin-top: 2px; line-height: 1.3; max-width: 88px; }
+
+    /* Graph visual */
+    .bar-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      height: 140px;
+      padding: 10px 10px 0;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 8px;
+    }
+    .bar-group { display: flex; flex-direction: column; align-items: center; flex: 1; }
+    .bar {
+      width: 100%;
+      max-width: 48px;
+      background: var(--ss);
+      border-radius: 4px 4px 0 0;
+      transition: opacity 0.2s;
+    }
+    .bar-value { font-size: 0.75rem; font-weight: 900; color: var(--ss); margin-bottom: 3px; }
+    .bar-label { font-size: 0.72rem; color: var(--muted); text-align: center; margin-top: 6px; line-height: 1.3; }
+    .chart-wrap {
+      background: #FFFBEB;
+      border: 2px solid #FDE68A;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+    .chart-title { font-size: 0.8rem; font-weight: 800; color: var(--ss); margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="site-logo">Calvin's <span>Study Site</span> 📚</a>
+      <nav class="nav-links">
+        <a href="math.html"           class="nav-link math">🔢 Math</a>
+        <a href="ela.html"            class="nav-link ela">📖 ELA</a>
+        <a href="science.html"        class="nav-link sci">🔬 Science</a>
+        <a href="social-studies.html" class="nav-link ss active">🌍 Social Studies</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <div class="subject-hero">
+      <div class="big-icon">📋</div>
+      <div>
+        <h1 style="color: var(--ss);">Social Studies Skills</h1>
+        <p>Primary vs. secondary sources, timelines, graphs, fact vs. opinion, cause &amp; effect, and book parts</p>
+      </div>
+    </div>
+
+    <div class="page-actions">
+      <button class="btn btn-sm" style="background:var(--ss);color:#fff;" onclick="resetAll()">🔄 Reset All</button>
+      <a href="social-studies.html" class="btn btn-gray btn-sm">← Back to Social Studies</a>
+      <a href="quiz.html?subject=social-studies&topic=Social+Studies+Skills" class="btn btn-outline btn-sm" style="border-color:var(--ss);color:var(--ss);">Take a Quiz →</a>
+    </div>
+
+    <!-- ── WS1: Primary vs. Secondary Sources ─────────────────────────────── -->
+    <div class="ws-section">
+      <h2>📜 Worksheet 1 — Primary vs. Secondary Sources</h2>
+      <p class="ws-desc">A <strong>primary source</strong> comes from someone who was actually there. A <strong>secondary source</strong> is written by someone who learned about the event later. Read each description and decide which type it is.</p>
+      <div class="study-notes" style="margin-bottom: 18px;">
+        <h4>Quick Guide</h4>
+        <ul>
+          <li><strong>Primary sources:</strong> diary entries · personal letters · photographs taken at the time · speeches given by the person · eyewitness accounts · official documents signed at the time (Declaration of Independence)</li>
+          <li><strong>Secondary sources:</strong> textbooks · encyclopedias · biographies (written by someone else) · documentaries · museum exhibits · news articles written after the event</li>
+          <li><strong>Trick:</strong> Ask "Was the author there when it happened?" If yes → primary. If no → secondary.</li>
+        </ul>
+      </div>
+      <div class="ws-score" id="score1"></div>
+      <div id="ws1"></div>
+      <div class="ws-row">
+        <button class="btn btn-sm" style="background:var(--ss);color:#fff;" onclick="checkWS(1)">Check Answers</button>
+        <button class="btn btn-gray btn-sm" onclick="resetWS(1)">Reset</button>
+      </div>
+    </div>
+
+    <!-- ── WS2: Reading Timelines ──────────────────────────────────────────── -->
+    <div class="ws-section">
+      <h2>📅 Worksheet 2 — Reading Timelines &amp; Graphs</h2>
+      <p class="ws-desc">Use the timeline and bar graph below to answer each question.</p>
+      <div class="study-notes" style="margin-bottom: 18px;">
+        <h4>How to Read a Timeline</h4>
+        <ul>
+          <li>Earlier dates are on the <strong>left</strong>; later dates are on the <strong>right</strong></li>
+          <li>To find how many years between two events: <strong>subtract</strong> the earlier year from the later year</li>
+          <li>Events are listed in <strong>chronological order</strong> (time order)</li>
+        </ul>
+        <h4 style="margin-top:8px;">How to Read a Bar Graph</h4>
+        <ul>
+          <li>Look at the <strong>title</strong> to know what is being compared</li>
+          <li>Read the <strong>scale</strong> on the side to know what each bar height means</li>
+          <li>The <strong>tallest bar</strong> = most; the <strong>shortest bar</strong> = least</li>
+          <li>To find the difference between two bars: <strong>subtract</strong> the smaller from the larger</li>
+        </ul>
+      </div>
+      <div class="ws-score" id="score2"></div>
+      <div id="ws2"></div>
+      <div class="ws-row">
+        <button class="btn btn-sm" style="background:var(--ss);color:#fff;" onclick="checkWS(2)">Check Answers</button>
+        <button class="btn btn-gray btn-sm" onclick="resetWS(2)">Reset</button>
+      </div>
+    </div>
+
+    <!-- ── WS3: Fact vs. Opinion, Cause & Effect, Book Parts ─────────────── -->
+    <div class="ws-section">
+      <h2>🧠 Worksheet 3 — Fact, Opinion, Cause &amp; Effect, and Book Parts</h2>
+      <p class="ws-desc">Mixed practice covering three key social studies skills.</p>
+      <div class="study-notes" style="margin-bottom: 18px;">
+        <h4>Fact vs. Opinion</h4>
+        <ul>
+          <li><strong>Fact:</strong> can be proven true or false using evidence. "Texas became a state in 1845."</li>
+          <li><strong>Opinion:</strong> a personal belief, feeling, or judgment. Cannot be proven. Often contains words like <em>best, worst, should, I think, I believe, most important.</em></li>
+        </ul>
+        <h4 style="margin-top:8px;">Cause &amp; Effect</h4>
+        <ul>
+          <li><strong>Cause</strong> = why something happened · <strong>Effect</strong> = what happened as a result</li>
+          <li>Clue words: <em>because, as a result, therefore, so, led to, caused</em></li>
+        </ul>
+        <h4 style="margin-top:8px;">Parts of a Book</h4>
+        <ul>
+          <li><strong>Table of Contents:</strong> lists chapters in order, at the FRONT of the book — tells you what page each chapter starts on</li>
+          <li><strong>Index:</strong> alphabetical list of topics at the BACK — tells you exact page numbers where that topic appears</li>
+          <li><strong>Glossary:</strong> dictionary of key terms at the BACK — gives definitions of important words used in the book</li>
+        </ul>
+      </div>
+      <div class="ws-score" id="score3"></div>
+      <div id="ws3"></div>
+      <div class="ws-row">
+        <button class="btn btn-sm" style="background:var(--ss);color:#fff;" onclick="checkWS(3)">Check Answers</button>
+        <button class="btn btn-gray btn-sm" onclick="resetWS(3)">Reset</button>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    const LETTERS = ['A', 'B', 'C', 'D'];
+
+    function srcBox(label, text) {
+      return `<div class="source-box"><div class="source-label">${label}</div>${text}</div>`;
+    }
+
+    // ── Timeline HTML ──────────────────────────────────────────────────────────
+    const TIMELINE_HTML = `
+      <div class="timeline-visual">
+        <div style="font-size:0.8rem;font-weight:800;color:var(--ss);margin-bottom:8px;">Texas History Timeline</div>
+        <div class="timeline-bar">
+          <div class="tl-event">
+            <div class="tl-dot"></div>
+            <div class="tl-year">1836</div>
+            <div class="tl-label">Texas becomes an independent republic</div>
+          </div>
+          <div class="tl-event">
+            <div class="tl-dot"></div>
+            <div class="tl-year">1845</div>
+            <div class="tl-label">Texas joins the United States</div>
+          </div>
+          <div class="tl-event">
+            <div class="tl-dot"></div>
+            <div class="tl-year">1861</div>
+            <div class="tl-label">Civil War begins</div>
+          </div>
+          <div class="tl-event">
+            <div class="tl-dot"></div>
+            <div class="tl-year">1900</div>
+            <div class="tl-label">Great Galveston Hurricane</div>
+          </div>
+          <div class="tl-event">
+            <div class="tl-dot"></div>
+            <div class="tl-year">1969</div>
+            <div class="tl-label">NASA Houston guides Moon landing</div>
+          </div>
+        </div>
+      </div>`;
+
+    // ── Bar Chart HTML ─────────────────────────────────────────────────────────
+    const CHART_HTML = `
+      <div class="chart-wrap">
+        <div class="chart-title">Favorite School Subjects — Mrs. Rivera's Class (30 Students)</div>
+        <div class="bar-chart">
+          <div class="bar-group">
+            <div class="bar-value">8</div>
+            <div class="bar" style="height:76px;"></div>
+            <div class="bar-label">Math</div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-value">12</div>
+            <div class="bar" style="height:114px;"></div>
+            <div class="bar-label">Science</div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-value">5</div>
+            <div class="bar" style="height:48px;"></div>
+            <div class="bar-label">Social Studies</div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-value">3</div>
+            <div class="bar" style="height:29px;"></div>
+            <div class="bar-label">Writing</div>
+          </div>
+          <div class="bar-group">
+            <div class="bar-value">2</div>
+            <div class="bar" style="height:19px;"></div>
+            <div class="bar-label">Reading</div>
+          </div>
+        </div>
+      </div>`;
+
+    // ── WS1: Primary vs. Secondary ────────────────────────────────────────────
+    const WS1 = [
+      {
+        passage: srcBox('Source:', '"Dear Journal, today I marched with Dr. King in Washington. The crowd was enormous. I have never heard anyone speak with such power. I will never forget this day." — August 28, 1963'),
+        q: 'This source is —',
+        options: ['A secondary source, because it describes a famous event.', 'A primary source, because the writer was present and recorded it at the time.', 'A secondary source, because it is about a famous person.', 'A primary source, because it uses quotes.'],
+        correct: 1,
+        note: 'A diary entry written by someone who was actually there makes it a primary source. The writer personally experienced the event and recorded it firsthand.'
+      },
+      {
+        passage: srcBox('Source:', 'Chapter 4 of a 3rd grade social studies textbook reads: "The Civil War lasted from 1861 to 1865. It was fought between the Northern states (the Union) and the Southern states (the Confederacy) over issues including slavery and states\' rights."'),
+        q: 'This source is —',
+        options: ['A primary source, because it describes the Civil War accurately.', 'A primary source, because it was written by historians.', 'A secondary source, because it was written by people who were not alive during the Civil War.', 'A secondary source, because it is in a textbook.'],
+        correct: 2,
+        note: 'The key reason is that the textbook authors were not alive during the Civil War — they learned about it from other sources. Being in a textbook alone doesn\'t make it secondary; the author\'s relationship to the event does.'
+      },
+      {
+        passage: srcBox('Source:', 'A photograph taken by a soldier during World War II showing troops landing on a beach.'),
+        q: 'This source is —',
+        options: ['A secondary source, because photographs can be edited.', 'A secondary source, because it does not include any words.', 'A primary source, because it was taken by someone present at the event.', 'A primary source, because it shows a famous battle.'],
+        correct: 2,
+        note: 'A photograph taken by someone who was at the event is a primary source — it is a firsthand visual record of what happened at that moment.'
+      },
+      {
+        passage: srcBox('Source:', 'A documentary film about the life of Rosa Parks, produced in 2005, featuring interviews with historians and re-enacted scenes of the Montgomery Bus Boycott.'),
+        q: 'This source is —',
+        options: ['A primary source, because it features real people talking.', 'A primary source, because Rosa Parks really existed.', 'A secondary source, because the film was made in 2005 — long after the events.', 'A secondary source, because documentaries are on television.'],
+        correct: 2,
+        note: 'The documentary was made in 2005, decades after the Bus Boycott of 1955. Even though historians are interviewed, the film itself is a secondary source — it was created by people interpreting and describing events they did not witness.'
+      },
+      {
+        passage: srcBox('Source:', '"Four score and seven years ago our fathers brought forth on this continent, a new nation, conceived in Liberty..." — Abraham Lincoln, Gettysburg Address, November 19, 1863'),
+        q: 'This source is —',
+        options: ['A secondary source, because Lincoln was talking about events from 87 years before.', 'A secondary source, because it is a speech.', 'A primary source, because Lincoln wrote and delivered this speech himself.', 'A primary source, because it mentions the founding of the United States.'],
+        correct: 2,
+        note: 'A speech written and delivered by the historical figure himself is a primary source — it comes directly from Lincoln. Even though he references earlier history, the speech itself is his original words.'
+      },
+      {
+        passage: srcBox('Source:', 'An encyclopedia entry about the moon landing that was written in 1985, summarizing news reports and NASA records from 1969.'),
+        q: 'This source is —',
+        options: ['A primary source, because it uses NASA records.', 'A primary source, because it is factual.', 'A secondary source, because it summarizes information from other sources.', 'A secondary source, because it was written by a scientist.'],
+        correct: 2,
+        note: 'The encyclopedia entry summarizes other sources (NASA records, news reports) and was written years after the moon landing. This makes it a secondary source — the authors were not present at the event.'
+      },
+    ];
+
+    // ── WS2: Timelines & Graphs ───────────────────────────────────────────────
+    const WS2 = [
+      {
+        passage: TIMELINE_HTML,
+        q: 'According to the timeline, how many years passed between Texas becoming a republic and Texas joining the United States?',
+        options: ['7 years', '9 years', '15 years', '25 years'],
+        correct: 1,
+        note: '1845 − 1836 = 9 years passed between Texas becoming an independent republic (1836) and joining the United States (1845).'
+      },
+      {
+        passage: TIMELINE_HTML,
+        q: 'Which event on the timeline happened FIRST?',
+        options: ['Texas joins the United States', 'The Great Galveston Hurricane', 'Texas becomes an independent republic', 'NASA guides the Moon landing'],
+        correct: 2,
+        note: 'Earlier dates are on the left of a timeline. Texas became a republic in 1836, which is the earliest date shown — so it happened first.'
+      },
+      {
+        passage: TIMELINE_HTML,
+        q: 'How many years passed between the start of the Civil War (1861) and the NASA Moon landing (1969)?',
+        options: ['98 years', '108 years', '88 years', '118 years'],
+        correct: 1,
+        note: '1969 − 1861 = 108 years passed between the Civil War beginning and NASA guiding the first Moon landing.'
+      },
+      {
+        passage: CHART_HTML,
+        q: 'According to the bar graph, which subject was chosen by the MOST students?',
+        options: ['Math', 'Science', 'Social Studies', 'Writing'],
+        correct: 1,
+        note: 'Science has the tallest bar at 12 students — more than any other subject in Mrs. Rivera\'s class.'
+      },
+      {
+        passage: CHART_HTML,
+        q: 'How many MORE students chose Math than chose Writing?',
+        options: ['3', '4', '5', '6'],
+        correct: 2,
+        note: 'Math = 8 students, Writing = 3 students. 8 − 3 = 5 more students chose Math than Writing.'
+      },
+      {
+        passage: CHART_HTML,
+        q: 'How many students chose Social Studies and Reading combined?',
+        options: ['5', '6', '7', '8'],
+        correct: 2,
+        note: 'Social Studies = 5 students, Reading = 2 students. 5 + 2 = 7 students combined.'
+      },
+      {
+        passage: CHART_HTML,
+        q: 'What do the bars in this graph allow you to do?',
+        options: ['See how subjects changed in popularity over time.', 'Compare the number of students who chose each subject.', 'Find out how many students are in the whole school.', 'Show what fraction of the class likes science.'],
+        correct: 1,
+        note: 'Bar graphs are used to COMPARE amounts across different categories. This bar graph lets us compare how many students chose each subject.'
+      },
+    ];
+
+    // ── WS3: Fact/Opinion, Cause/Effect, Book Parts ───────────────────────────
+    const WS3 = [
+      {
+        q: 'Which of the following is a FACT?',
+        options: [
+          '"Texas is the most beautiful state in the United States."',
+          '"The Alamo is the best historical site to visit."',
+          '"Texas became the 28th state of the United States on December 29, 1845."',
+          '"Everyone should learn about Texas history."'
+        ],
+        correct: 2,
+        note: 'A fact can be proven. The date Texas became a state is a verifiable historical record. The other options express opinions — they use words like "most beautiful," "best," and "should" which cannot be proven.'
+      },
+      {
+        q: 'Which of the following is an OPINION?',
+        options: [
+          '"George Washington was the first President of the United States."',
+          '"The Declaration of Independence was signed in 1776."',
+          '"Learning about history is the most important subject in school."',
+          '"Texas has a border with Mexico."'
+        ],
+        correct: 2,
+        note: 'An opinion is a personal belief that cannot be proven. "Most important" is a judgment — different people would disagree. The other options are all facts that can be verified.'
+      },
+      {
+        q: 'What is the CAUSE in this sentence?\n"Because heavy rains flooded the roads, school was cancelled."',
+        options: [
+          'School was cancelled.',
+          'The roads were flooded.',
+          'Heavy rains fell.',
+          'Students stayed home.'
+        ],
+        correct: 2,
+        note: 'The CAUSE is why something happened. Heavy rains are what caused the roads to flood. The flooding led to school cancellation. "Because" is a clue word that introduces the cause.'
+      },
+      {
+        q: 'What is the EFFECT in this sentence?\n"Settlers moved west in the 1800s because they wanted free land and new opportunities."',
+        options: [
+          'The settlers wanted free land.',
+          'There were new opportunities in the west.',
+          'Settlers moved west.',
+          'The 1800s was a period of westward expansion.'
+        ],
+        correct: 2,
+        note: 'The EFFECT is what happened as a result. Settlers actually moving west is the effect. Their desire for land and opportunity was the cause.'
+      },
+      {
+        q: 'Calvin is reading a book about U.S. Presidents. He wants to find out what page has information about Abraham Lincoln. Which part of the book should he use?',
+        options: [
+          'The Table of Contents — it lists all chapters in order.',
+          'The Glossary — it defines key terms used in the book.',
+          'The Index — it lists topics alphabetically with exact page numbers.',
+          'The Introduction — it summarizes the book.'
+        ],
+        correct: 2,
+        note: 'The Index is at the back of the book and lists specific topics (like "Lincoln, Abraham") alphabetically with page numbers — perfect for finding where a specific topic appears.'
+      },
+      {
+        q: 'Calvin wants to find the meaning of the word "democracy" used in his social studies book. Which part of the book should he check?',
+        options: [
+          'The Table of Contents — it shows what chapters are in the book.',
+          'The Glossary — it contains definitions of important vocabulary words.',
+          'The Index — it lists page numbers for topics.',
+          'The Bibliography — it lists books the author used.'
+        ],
+        correct: 1,
+        note: 'The Glossary is a mini-dictionary at the back of the book that gives definitions of important terms. "Democracy" would be defined there.'
+      },
+      {
+        q: 'Calvin wants to find out which chapter covers the American Revolution. Which part of the book should he look at FIRST?',
+        options: [
+          'The Glossary — it will define "American Revolution."',
+          'The Index — it lists every topic by page number.',
+          'The Table of Contents — it lists all chapters and their page numbers at the front of the book.',
+          'The last chapter — it probably summarizes everything.'
+        ],
+        correct: 2,
+        note: 'The Table of Contents is at the front of the book and shows all chapters in order with their page numbers — perfect for finding out which chapter covers a broad topic like the American Revolution.'
+      },
+      {
+        q: 'Which of the following is a FACT?',
+        options: [
+          '"Rosa Parks was the bravest person in American history."',
+          '"Rosa Parks refused to give up her seat on a Montgomery bus on December 1, 1955."',
+          '"Everyone should know who Rosa Parks is."',
+          '"The civil rights movement was the most important event of the 20th century."'
+        ],
+        correct: 1,
+        note: 'The date and action (Rosa Parks refused to give up her seat on December 1, 1955) can be verified from historical records — it is a fact. The other options include value judgments ("bravest," "most important," "should") that cannot be proven.'
+      },
+    ];
+
+    // ── Engine (same as other worksheets) ─────────────────────────────────────
+    function renderWS(wsNum, data, containerEl) {
+      containerEl.innerHTML = data.map((item, qi) => {
+        const passage = item.passage || '';
+        const opts = item.options.map((o, oi) => `
+          <button class="sci-opt" id="ws${wsNum}q${qi}o${oi}"
+            onclick="selectOption(${wsNum},${qi},${oi},${item.options.length})">
+            <span class="opt-letter">${LETTERS[oi]}</span>
+            <span>${o}</span>
+          </button>`).join('');
+        return `
+          <div class="sci-problem" id="ws${wsNum}p${qi}">
+            ${passage}
+            <div class="sci-q">${qi + 1}. ${item.q}</div>
+            <div class="sci-options">${opts}</div>
+            <div class="result-note" id="ws${wsNum}n${qi}"></div>
+          </div>`;
+      }).join('');
+    }
+
+    function selectOption(wsNum, qi, oi, total) {
+      for (let i = 0; i < total; i++) {
+        const btn = document.getElementById(`ws${wsNum}q${qi}o${i}`);
+        if (btn && !btn.disabled) btn.classList.remove('selected');
+      }
+      const chosen = document.getElementById(`ws${wsNum}q${qi}o${oi}`);
+      if (chosen && !chosen.disabled) chosen.classList.add('selected');
+    }
+
+    function checkWS(wsNum) {
+      const datasets = { 1: WS1, 2: WS2, 3: WS3 };
+      const data = datasets[wsNum];
+      let correct = 0;
+      data.forEach((item, qi) => {
+        const card = document.getElementById(`ws${wsNum}p${qi}`);
+        const note = document.getElementById(`ws${wsNum}n${qi}`);
+        let selected = -1;
+        for (let oi = 0; oi < item.options.length; oi++) {
+          const btn = document.getElementById(`ws${wsNum}q${qi}o${oi}`);
+          if (!btn) continue;
+          btn.disabled = true;
+          if (btn.classList.contains('selected')) selected = oi;
+        }
+        card.classList.remove('correct', 'wrong');
+        note.className = 'result-note';
+        const correctBtn = document.getElementById(`ws${wsNum}q${qi}o${item.correct}`);
+        if (selected === -1) {
+          if (correctBtn) correctBtn.classList.add('reveal');
+          note.textContent = `No answer selected. The answer is ${LETTERS[item.correct]}.`;
+          note.classList.add('show', 'err');
+          return;
+        }
+        if (selected === item.correct) {
+          card.classList.add('correct');
+          document.getElementById(`ws${wsNum}q${qi}o${selected}`).classList.replace('selected', 'correct');
+          note.textContent = `✓ Correct! ${item.note}`;
+          note.classList.add('show', 'ok');
+          correct++;
+        } else {
+          card.classList.add('wrong');
+          document.getElementById(`ws${wsNum}q${qi}o${selected}`).classList.replace('selected', 'wrong');
+          if (correctBtn) correctBtn.classList.add('reveal');
+          note.textContent = `✗ The correct answer is ${LETTERS[item.correct]}. ${item.note}`;
+          note.classList.add('show', 'err');
+        }
+      });
+      const scoreEl = document.getElementById(`score${wsNum}`);
+      const pct = Math.round(100 * correct / data.length);
+      scoreEl.textContent = `${correct} / ${data.length} correct (${pct}%)`;
+      scoreEl.className = 'ws-score' + (pct >= 80 ? ' good' : '');
+    }
+
+    function resetWS(wsNum) {
+      const datasets   = { 1: WS1, 2: WS2, 3: WS3 };
+      const containers = { 1: 'ws1', 2: 'ws2', 3: 'ws3' };
+      document.getElementById(`score${wsNum}`).textContent = '';
+      renderWS(wsNum, datasets[wsNum], document.getElementById(containers[wsNum]));
+    }
+
+    function resetAll() { [1,2,3].forEach(resetWS); }
+
+    renderWS(1, WS1, document.getElementById('ws1'));
+    renderWS(2, WS2, document.getElementById('ws2'));
+    renderWS(3, WS3, document.getElementById('ws3'));
+  </script>
+
+</body>
+</html>

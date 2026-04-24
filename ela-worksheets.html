@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ELA Worksheets — Calvin's Study Site</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .ws-section {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .ws-section h2 { font-size: 1.15rem; font-weight: 800; margin-bottom: 6px; color: var(--ela); }
+    .ws-desc { font-size: 0.9rem; color: var(--muted); margin-bottom: 18px; }
+    .ws-score { font-size: 0.9rem; font-weight: 700; color: var(--muted); margin-bottom: 14px; min-height: 20px; }
+    .ws-score.good { color: var(--green); }
+    .ws-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 16px; }
+
+    .sci-problem {
+      background: #F8FAFC;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin-bottom: 14px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .sci-problem.correct { border-color: var(--green); background: #DCFCE7; }
+    .sci-problem.wrong   { border-color: var(--red);   background: #FEE2E2; }
+
+    .passage-box {
+      font-size: 0.92rem;
+      line-height: 1.65;
+      background: #EFF6FF;
+      border-left: 3px solid var(--ela);
+      border-radius: 6px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      color: var(--text);
+    }
+    .passage-label {
+      font-size: 0.72rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ela);
+      margin-bottom: 6px;
+    }
+    .sci-q { font-size: 0.97rem; font-weight: 700; line-height: 1.55; margin-bottom: 12px; }
+
+    .sci-options { display: flex; flex-direction: column; gap: 7px; }
+    .sci-opt {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 9px 13px; border-radius: 8px;
+      border: 2px solid var(--border); background: white;
+      font-family: inherit; font-size: 0.92rem; font-weight: 600;
+      color: var(--text); cursor: pointer; text-align: left;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .sci-opt:hover:not(:disabled) { border-color: var(--ela); background: #F0FDF4; }
+    .sci-opt.selected { border-color: var(--ela); background: #ECFDF5; color: #065F46; }
+    .sci-opt.correct  { border-color: var(--green); background: #DCFCE7; color: #166534; }
+    .sci-opt.wrong    { border-color: var(--red);   background: #FEE2E2; color: #991B1B; }
+    .sci-opt.reveal   { border-color: var(--green); background: #DCFCE7; color: #166534; }
+    .sci-opt:disabled { cursor: default; }
+
+    .opt-letter {
+      display: flex; align-items: center; justify-content: center;
+      width: 26px; height: 26px; border-radius: 50%;
+      background: var(--border); font-weight: 900; font-size: 0.8rem;
+      flex-shrink: 0; margin-top: 1px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .sci-opt.selected .opt-letter { background: var(--ela);   color: #fff; }
+    .sci-opt.correct  .opt-letter { background: var(--green); color: #fff; }
+    .sci-opt.wrong    .opt-letter { background: var(--red);   color: #fff; }
+    .sci-opt.reveal   .opt-letter { background: var(--green); color: #fff; }
+
+    .result-note { font-size: 0.84rem; font-weight: 700; margin-top: 10px; display: none; }
+    .result-note.show { display: block; }
+    .result-note.ok  { color: var(--green); }
+    .result-note.err { color: var(--red); }
+
+    .page-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 28px; }
+    .sentence-pair {
+      background: #F0FDF4;
+      border-left: 3px solid var(--ela);
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 0.92rem;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="site-logo">Calvin's <span>Study Site</span> 📚</a>
+      <nav class="nav-links">
+        <a href="math.html"           class="nav-link math">🔢 Math</a>
+        <a href="ela.html"            class="nav-link ela active">📖 ELA</a>
+        <a href="science.html"        class="nav-link sci">🔬 Science</a>
+        <a href="social-studies.html" class="nav-link ss">🌍 Social Studies</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <div class="subject-hero">
+      <div class="big-icon">📖</div>
+      <div>
+        <h1 style="color: var(--ela);">ELA Worksheets</h1>
+        <p>Reading comprehension, paragraph structure, capitalization rules, and combining sentences</p>
+      </div>
+    </div>
+
+    <div class="page-actions">
+      <button class="btn btn-sm" style="background:var(--ela);color:#fff;" onclick="resetAll()">🔄 Reset All</button>
+      <a href="ela.html" class="btn btn-gray btn-sm">← Back to ELA</a>
+      <a href="quiz.html?subject=ela&topic=all" class="btn btn-outline btn-sm" style="border-color:var(--ela);color:var(--ela);">Take a Quiz →</a>
+    </div>
+
+    <!-- ── WS1: Reading Comprehension ──────────────────────────────────────── -->
+    <div class="ws-section">
+      <h2>📚 Worksheet 1 — Reading Comprehension</h2>
+      <p class="ws-desc">Read each short passage carefully, then answer the question. Use clues in the text to support your answer.</p>
+      <div class="study-notes" style="margin-bottom: 18px;">
+        <h4>Key Reading Skills</h4>
+        <ul>
+          <li><strong>Main idea:</strong> what the WHOLE passage is mostly about — one big idea that covers every sentence</li>
+          <li><strong>Inference:</strong> a smart guess using text clues + what you already know. The answer isn't stated — you figure it out</li>
+          <li><strong>Cause &amp; Effect:</strong> cause = why it happened; effect = what happened. Look for <em>because, so, therefore, as a result</em></li>
+          <li><strong>Figurative language:</strong> simile = "like/as" comparison · metaphor = direct comparison · idiom = phrase with a special meaning · alliteration = same starting sounds</li>
+          <li><strong>Point of view:</strong> first person uses "I/me/my" · third person uses "he/she/they"</li>
+          <li><strong>Genre:</strong> fiction (made-up) · nonfiction (true facts) · fantasy (magic/impossible) · poetry (rhythm/imagery)</li>
+        </ul>
+      </div>
+      <div class="ws-score" id="score1"></div>
+      <div id="ws1"></div>
+      <div class="ws-row">
+        <button class="btn btn-sm" style="background:var(--ela);color:#fff;" onclick="checkWS(1)">Check Answers</button>
+        <button class="btn btn-gray btn-sm" onclick="resetWS(1)">Reset</button>
+      </div>
+    </div>
+
+    <!-- ── WS2: Paragraph Structure ────────────────────────────────────────── -->
+    <div class="ws-section">
+      <h2>🧱 Worksheet 2 — Paragraph Structure</h2>
+      <p class="ws-desc">Every paragraph has three parts. Read each question and pick the best answer.</p>
+      <div class="study-notes" style="margin-bottom: 18px;">
+        <h4>Paragraph Parts</h4>
+        <ul>
+          <li><strong>Topic sentence:</strong> the FIRST sentence — states the main idea of the whole paragraph. It's general, not a detail</li>
+          <li><strong>Supporting sentences:</strong> the MIDDLE sentences — give facts, details, or examples about the topic sentence. Usually 3–4</li>
+          <li><strong>Concluding sentence:</strong> the LAST sentence — wraps up the paragraph by restating the main idea in a new way. Often starts with "In conclusion," "As you can see," or "For these reasons..."</li>
+          <li><strong>Stay on topic:</strong> every sentence in a paragraph must connect to the main idea. A sentence that doesn't fit should be removed</li>
+        </ul>
+      </div>
+      <div class="ws-score" id="score2"></div>
+      <div id="ws2"></div>
+      <div class="ws-row">
+        <button class="btn btn-sm" style="background:var(--ela);color:#fff;" onclick="checkWS(2)">Check Answers</button>
+        <button class="btn btn-gray btn-sm" onclick="resetWS(2)">Reset</button>
+      </div>
+    </div>
+
+    <!-- ── WS3: Capitalization Rules ───────────────────────────────────────── -->
+    <div class="ws-section">
+      <h2>🔠 Worksheet 3 — Capitalization Rules</h2>
+      <p class="ws-desc">Pick the correctly capitalized sentence, or identify the capitalization mistake.</p>
+      <div class="study-notes" style="margin-bottom: 18px;">
+        <h4>Always Capitalize</h4>
+        <ul>
+          <li><strong>First word</strong> of every sentence</li>
+          <li><strong>The word "I"</strong> — always, no matter where it appears</li>
+          <li><strong>Proper names:</strong> names of specific people (Calvin, Mrs. Rivera), places (Texas, Paris, Grand Canyon), and organizations</li>
+          <li><strong>Days of the week</strong> (Monday, Friday) and <strong>months</strong> (January, July) — but NOT seasons (spring, summer, fall, winter)</li>
+          <li><strong>Titles</strong> before names: Mr., Mrs., Dr., President</li>
+          <li><strong>Holidays:</strong> Thanksgiving, Christmas, Fourth of July</li>
+          <li>Do NOT capitalize general nouns like "park," "river," "school," "teacher" — only capitalize them when they are part of an official name (Yellowstone National Park, Colorado River)</li>
+        </ul>
+      </div>
+      <div class="ws-score" id="score3"></div>
+      <div id="ws3"></div>
+      <div class="ws-row">
+        <button class="btn btn-sm" style="background:var(--ela);color:#fff;" onclick="checkWS(3)">Check Answers</button>
+        <button class="btn btn-gray btn-sm" onclick="resetWS(3)">Reset</button>
+      </div>
+    </div>
+
+    <!-- ── WS4: Combining Sentences ────────────────────────────────────────── -->
+    <div class="ws-section">
+      <h2>🔗 Worksheet 4 — Combining Sentences</h2>
+      <p class="ws-desc">Good writers combine short, choppy sentences into smooth, longer ones using conjunctions. Pick the best combined sentence.</p>
+      <div class="study-notes" style="margin-bottom: 18px;">
+        <h4>Conjunctions and When to Use Them</h4>
+        <ul>
+          <li><strong>and</strong> — adds two ideas together ("She likes cats and dogs.")</li>
+          <li><strong>but</strong> — shows a contrast or opposite ("I wanted to go, but it was raining.")</li>
+          <li><strong>or</strong> — shows a choice ("We can walk or take the bus.")</li>
+          <li><strong>so</strong> — shows a result or consequence ("It was hot, so we went swimming.")</li>
+          <li><strong>because</strong> — shows a reason ("She wore a coat because it was cold.")</li>
+          <li><strong>Avoid run-ons:</strong> don't smash sentences together without a conjunction or punctuation. "It rained we got wet" is a run-on.</li>
+          <li><strong>Avoid fragments:</strong> don't break a sentence in the wrong place. "Because it rained." is a fragment — it doesn't finish the thought.</li>
+        </ul>
+      </div>
+      <div class="ws-score" id="score4"></div>
+      <div id="ws4"></div>
+      <div class="ws-row">
+        <button class="btn btn-sm" style="background:var(--ela);color:#fff;" onclick="checkWS(4)">Check Answers</button>
+        <button class="btn btn-gray btn-sm" onclick="resetWS(4)">Reset</button>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    const LETTERS = ['A', 'B', 'C', 'D'];
+
+    // ── Passage helper ─────────────────────────────────────────────────────────
+    function passageHtml(label, text) {
+      return `<div class="passage-box"><div class="passage-label">${label}</div>${text}</div>`;
+    }
+
+    // ── Question Data ──────────────────────────────────────────────────────────
+
+    const WS1 = [
+      {
+        passage: passageHtml('Read the passage:', 'The arctic fox changes its fur color with the seasons. In winter, its coat turns bright white to blend in with the snow. In summer, the fur becomes brown or gray to match the rocky ground and plants.'),
+        q: 'What is the MAIN IDEA of this passage?',
+        options: ['Arctic foxes have white fur in winter.', 'The arctic fox changes fur color to blend in with its surroundings.', 'Animals that live in cold places are white.', 'Brown and gray are common colors in nature.'],
+        correct: 1,
+        note: 'The main idea covers the whole passage — the fox changes colors to blend in (camouflage). Option A is just one detail, not the whole idea.'
+      },
+      {
+        passage: passageHtml('Read the passage:', 'The storm hit without warning. Rain fell in buckets, and the wind howled like a wolf across the plains. Because the roads flooded, school was cancelled the next day.'),
+        q: 'What was the EFFECT of the storm?',
+        options: ['The wind blew very fast.', 'The rain fell suddenly.', 'School was cancelled because roads flooded.', 'The storm came without any warning.'],
+        correct: 2,
+        note: 'The cause is the storm → the effect is school being cancelled. The word "because" in the passage is a clue that points to cause and effect.'
+      },
+      {
+        passage: passageHtml('Read the passage:', 'The storm hit without warning. Rain fell in buckets, and the wind howled like a wolf across the plains.'),
+        q: '"The wind howled like a wolf" is an example of which type of figurative language?',
+        options: ['Metaphor — it directly says the wind IS a wolf.', 'Alliteration — several words start with the same sound.', 'Idiom — it has a completely different secret meaning.', 'Simile — it compares the wind to a wolf using the word "like."'],
+        correct: 3,
+        note: 'A simile uses "like" or "as" to compare two things. "The wind howled LIKE a wolf" uses "like," so it is a simile.'
+      },
+      {
+        passage: passageHtml('Read the passage:', 'I woke up early on the first day of school. My heart was beating fast as I grabbed my backpack and headed for the door. "You\'ll do great," my mom said, squeezing my hand.'),
+        q: 'What point of view is this passage written in?',
+        options: ['Third person — it says "he" and "his."', 'First person — the narrator uses "I" and "my."', 'Second person — the passage talks directly to the reader using "you."', 'Third person omniscient — the narrator knows everyone\'s thoughts.'],
+        correct: 1,
+        note: 'First person point of view uses words like "I," "me," and "my." The narrator is telling the story from their own perspective.'
+      },
+      {
+        passage: passageHtml('Read the passage:', 'Every day, Sam practiced the piano even when he was tired and didn\'t feel like it. After a whole year of practice, he played a beautiful song at the school concert. His teacher smiled and said, "Hard work always pays off."'),
+        q: 'What is the THEME of this story?',
+        options: ['Piano is a very difficult instrument to learn.', 'Teachers give important advice to students.', 'Hard work and practice lead to success.', 'School concerts are exciting events.'],
+        correct: 2,
+        note: 'The theme is the life lesson of the whole story. Sam\'s year of hard practice led to success — the lesson is that hard work pays off.'
+      },
+      {
+        passage: passageHtml('Read the passage:', 'Chapter 1: The dragon spread its enormous wings and soared over the enchanted forest. Princess Aria reached into her satchel and pulled out the ancient magic wand, whispering the spell her grandmother had taught her.'),
+        q: 'What GENRE is this passage?',
+        options: ['Nonfiction — it describes real events.', 'Realistic fiction — this could really happen.', 'Fantasy fiction — it includes magic and impossible creatures.', 'Poetry — it uses rhyme and rhythm.'],
+        correct: 2,
+        note: 'Fantasy fiction includes things that cannot happen in real life — dragons, enchanted forests, and magic wands. This is clearly fantasy.'
+      },
+      {
+        passage: passageHtml('Read the passage:', 'Mia came home soaking wet, shivering so hard her teeth chattered. She went straight to her room and pulled on her warmest sweater and two pairs of socks.'),
+        q: 'What can you INFER from this passage?',
+        options: ['Mia went swimming after school.', 'Mia was extremely cold.', 'Mia does not own an umbrella.', 'Mia\'s room is near the front door.'],
+        correct: 1,
+        note: 'The passage never says Mia is cold, but the clues — soaking wet, shivering, chattering teeth, warm sweater, two pairs of socks — all point to her being very cold. That is an inference.'
+      },
+    ];
+
+    const WS2 = [
+      {
+        q: 'Which sentence would be the BEST topic sentence for a paragraph about dogs?',
+        options: ['Some dogs enjoy fetching balls in the park.', 'Dogs make wonderful pets for many different reasons.', 'My neighbor has a dog named Biscuit.', 'Dogs need to be walked at least once a day.'],
+        correct: 1,
+        note: 'A topic sentence states the main idea of the whole paragraph. Option B is general and covers all the reasons — the others are just details.'
+      },
+      {
+        q: 'A student is writing a paragraph about why rainforests are important. Which sentence does NOT belong?',
+        options: ['Rainforests are home to more than half of the world\'s animals.', 'My favorite color is green, just like rainforest leaves.', 'Many medicines we use today were discovered in rainforests.', 'Rainforests produce oxygen that cleans the air we breathe.'],
+        correct: 1,
+        note: 'A supporting sentence must connect to the topic (why rainforests are important). "My favorite color is green" has nothing to do with the topic — it goes off track.'
+      },
+      {
+        q: 'Which sentence would be the BEST concluding sentence for a paragraph about the benefits of exercise?',
+        options: ['Running is one kind of exercise you can do.', 'Jumping jacks and push-ups are also good exercises.', 'Some people exercise in the morning before school.', 'As you can see, exercising regularly keeps your body healthy and strong.'],
+        correct: 3,
+        note: 'A concluding sentence wraps up the paragraph. Option D restates the main idea (exercise is beneficial) in a new way. The others are details, not conclusions.'
+      },
+      {
+        q: 'A paragraph has these four sentences. Which should come FIRST?\n① "For all these reasons, butterflies are one of nature\'s most fascinating creatures."\n② "The monarch butterfly can migrate more than 2,000 miles."\n③ "Butterflies are fascinating creatures with many amazing abilities."\n④ "Some butterflies can taste with their feet."',
+        options: ['Sentence ① — it wraps up the ideas.', 'Sentence ② — it gives an interesting fact.', 'Sentence ③ — it states the main idea.', 'Sentence ④ — it starts with a surprising detail.'],
+        correct: 2,
+        note: 'Sentence ③ is the topic sentence — it introduces the main idea (butterflies have amazing abilities) without giving specific details yet. Sentence ① is actually the concluding sentence.'
+      },
+      {
+        q: 'Which is the BEST supporting detail for a paragraph with the topic sentence "The water cycle has four main stages"?',
+        options: ['Water is very important for all living things.', 'I learned about clouds in science class last year.', 'In the first stage, called evaporation, water turns into water vapor and rises into the air.', 'Rain falls in different amounts in different parts of the world.'],
+        correct: 2,
+        note: 'A supporting detail must directly explain or give information about the topic sentence. Option C describes one of the four stages, which is exactly what the paragraph promises to explain.'
+      },
+      {
+        q: 'Which of the following is a complete, well-structured paragraph?',
+        options: [
+          '"The library is quiet. I like books. Reading is fun."',
+          '"Oceans cover most of Earth\'s surface. They are very deep in some places. Fish live in the ocean. Also, waves."',
+          '"Oceans are one of Earth\'s most important environments. They cover about 71% of Earth\'s surface and are home to millions of species. Oceans also regulate our climate and provide food for people worldwide. Clearly, protecting our oceans is essential for life on Earth."',
+          '"Exercise is good. You should exercise. It helps your body. Exercise."'
+        ],
+        correct: 2,
+        note: 'Option C has all three parts: a topic sentence, three supporting details, and a concluding sentence. The others are lists of short, choppy sentences without clear structure.'
+      },
+    ];
+
+    const WS3 = [
+      {
+        q: 'Which sentence uses capitalization correctly?',
+        options: [
+          '"we went to see dr. johnson on tuesday."',
+          '"We went to see Dr. Johnson on tuesday."',
+          '"We went to see Dr. Johnson on Tuesday."',
+          '"We went to see dr. Johnson on Tuesday."'
+        ],
+        correct: 2,
+        note: '"We" is the first word (capitalize). "Dr. Johnson" is a title + proper name (capitalize both). "Tuesday" is a day of the week (capitalize). Option C is the only one that gets all three right.'
+      },
+      {
+        q: 'Which sentence is capitalized correctly?',
+        options: [
+          '"the eiffel Tower is located in paris, france."',
+          '"The Eiffel Tower is located in Paris, France."',
+          '"The Eiffel tower is located in paris, France."',
+          '"The Eiffel Tower is located in Paris, france."'
+        ],
+        correct: 1,
+        note: '"The" starts the sentence. "Eiffel Tower" is the proper name of a landmark. "Paris" and "France" are proper names of places. All must be capitalized.'
+      },
+      {
+        q: 'Which version of this sentence is capitalized correctly?\n"last summer, we drove to yellowstone national park."',
+        options: [
+          '"Last summer, we drove to Yellowstone National Park."',
+          '"Last Summer, we drove to Yellowstone National Park."',
+          '"last summer, we drove to Yellowstone National Park."',
+          '"Last summer, We drove to Yellowstone national park."'
+        ],
+        correct: 0,
+        note: '"Last" starts the sentence. "Yellowstone National Park" is the official proper name of a place. "summer" and "we" are not capitalized because "summer" is a season (not capitalized) and "we" does not start the sentence.'
+      },
+      {
+        q: 'Which sentence has a capitalization ERROR?',
+        options: [
+          '"We celebrate Thanksgiving in November."',
+          '"My teacher\'s name is Mrs. Rivera."',
+          '"The dog ran through the Park near our house."',
+          '"I visited the Grand Canyon last summer."'
+        ],
+        correct: 2,
+        note: '"Park" in this sentence is a common noun — it is not part of an official name like "Central Park." Common nouns like park, river, school, and city are NOT capitalized unless they are part of a proper name.'
+      },
+      {
+        q: 'Calvin writes: "my dog max and i went for a walk on friday morning." Which words need capital letters?',
+        options: [
+          '"my," "max," "i," and "friday"',
+          '"my," "dog," "max," "i," and "friday"',
+          '"my," "max," and "friday" only',
+          '"My," "Max," "I," "Friday," and "morning"'
+        ],
+        correct: 0,
+        note: '"my" starts the sentence. "Max" is a proper name (the dog\'s name). "i" is always capitalized when it refers to yourself. "friday" is a day of the week. "morning" is a common noun — no capital needed.'
+      },
+      {
+        q: 'Which rule explains why "spring" is NOT capitalized in the sentence "I love going to the park in spring"?',
+        options: [
+          'Spring is not important enough to capitalize.',
+          'Seasons (spring, summer, fall, winter) are not proper nouns and are not capitalized.',
+          'The word "spring" comes after "in," so it cannot be capitalized.',
+          'Only the first season of the year gets a capital letter.'
+        ],
+        correct: 1,
+        note: 'Seasons are common nouns, not proper nouns. We capitalize days (Monday), months (January), and holidays (Thanksgiving) — but NOT seasons.'
+      },
+    ];
+
+    const WS4 = [
+      {
+        setup: '"The dog barked." + "The dog was hungry."',
+        q: 'Which sentence BEST combines these two ideas?',
+        options: [
+          '"The dog barked, and the dog was hungry."',
+          '"The dog barked because it was hungry."',
+          '"The dog barked. Because it was hungry."',
+          '"The dog barked hungry."'
+        ],
+        correct: 1,
+        note: 'Option B uses "because" to explain the reason for the barking, which is more natural and informative. Option C creates a fragment ("Because it was hungry" cannot stand alone).'
+      },
+      {
+        setup: '"Maya likes to read." + "Maya likes to draw."',
+        q: 'Which is the BEST combined sentence?',
+        options: [
+          '"Maya likes to read, so Maya likes to draw."',
+          '"Maya likes to read and draw."',
+          '"Maya likes to read. And draw."',
+          '"Maya likes to read because she likes to draw."'
+        ],
+        correct: 1,
+        note: 'Option B removes the repeated "Maya likes to" and combines the two activities naturally. "And draw" alone (option C) is a fragment.'
+      },
+      {
+        setup: '"Calvin studied hard for the test." + "He got a great score."',
+        q: 'Which conjunction BEST connects these two sentences?',
+        options: [
+          '"Calvin studied hard for the test, but he got a great score."',
+          '"Calvin studied hard for the test, or he got a great score."',
+          '"Calvin studied hard for the test, so he got a great score."',
+          '"Calvin studied hard for the test, yet he got a great score."'
+        ],
+        correct: 2,
+        note: '"So" shows that one thing caused another — studying led to a great score. "But" and "yet" show contrast, which doesn\'t make sense here. "Or" shows a choice, which also doesn\'t fit.'
+      },
+      {
+        q: 'Which of the following is a RUN-ON sentence?',
+        options: [
+          '"She ran fast, but she still missed the bus."',
+          '"He likes cats, and he likes dogs."',
+          '"It was raining we stayed inside we watched a movie all afternoon."',
+          '"I was tired, so I went to bed early."'
+        ],
+        correct: 2,
+        note: 'A run-on sentence smashes two or more complete thoughts together without proper conjunctions or punctuation. Option C has three thoughts pushed together with no conjunctions or commas — it is a run-on.'
+      },
+      {
+        setup: '"The sun was bright." + "The day was warm." + "We decided to go swimming."',
+        q: 'Which BEST combines all three ideas?',
+        options: [
+          '"The sun was bright, and the day was warm because we decided to go swimming."',
+          '"The sun was bright, but the day was warm, and we decided to go swimming."',
+          '"The sun was bright and warm, so we decided to go swimming."',
+          '"The sun. The day was warm. Swimming."'
+        ],
+        correct: 2,
+        note: 'Option C combines the two weather observations ("bright and warm") and then uses "so" to show the result (going swimming). It\'s smooth and logically connected.'
+      },
+      {
+        q: 'Which sentence uses a conjunction CORRECTLY?',
+        options: [
+          '"I wanted to go to the park, but it was too hot outside."',
+          '"I wanted to go to the park, so it was too hot outside."',
+          '"I wanted to go to the park, or it was too hot outside."',
+          '"I wanted to go to the park, and it was too hot outside."'
+        ],
+        correct: 0,
+        note: '"But" shows contrast — Calvin wanted to go, but couldn\'t because of the heat. "So" would mean the heat was a result of going to the park (backwards). "Or" shows a choice. "And" just adds ideas without showing any contrast.'
+      },
+    ];
+
+    // ── Render & Check (same engine as science-worksheets) ────────────────────
+    function renderWS(wsNum, data, containerEl) {
+      containerEl.innerHTML = data.map((item, qi) => {
+        const passage = item.passage || '';
+        const setup   = item.setup ? `<div class="sentence-pair">${item.setup}</div>` : '';
+        const opts = item.options.map((o, oi) => `
+          <button class="sci-opt" id="ws${wsNum}q${qi}o${oi}"
+            onclick="selectOption(${wsNum},${qi},${oi},${item.options.length})">
+            <span class="opt-letter">${LETTERS[oi]}</span>
+            <span>${o}</span>
+          </button>`).join('');
+        return `
+          <div class="sci-problem" id="ws${wsNum}p${qi}">
+            ${passage}${setup}
+            <div class="sci-q">${qi + 1}. ${item.q}</div>
+            <div class="sci-options">${opts}</div>
+            <div class="result-note" id="ws${wsNum}n${qi}"></div>
+          </div>`;
+      }).join('');
+    }
+
+    function selectOption(wsNum, qi, oi, total) {
+      for (let i = 0; i < total; i++) {
+        const btn = document.getElementById(`ws${wsNum}q${qi}o${i}`);
+        if (btn && !btn.disabled) btn.classList.remove('selected');
+      }
+      const chosen = document.getElementById(`ws${wsNum}q${qi}o${oi}`);
+      if (chosen && !chosen.disabled) chosen.classList.add('selected');
+    }
+
+    function checkWS(wsNum) {
+      const datasets = { 1: WS1, 2: WS2, 3: WS3, 4: WS4 };
+      const data = datasets[wsNum];
+      let correct = 0;
+      data.forEach((item, qi) => {
+        const card = document.getElementById(`ws${wsNum}p${qi}`);
+        const note = document.getElementById(`ws${wsNum}n${qi}`);
+        let selected = -1;
+        for (let oi = 0; oi < item.options.length; oi++) {
+          const btn = document.getElementById(`ws${wsNum}q${qi}o${oi}`);
+          if (!btn) continue;
+          btn.disabled = true;
+          if (btn.classList.contains('selected')) selected = oi;
+        }
+        card.classList.remove('correct', 'wrong');
+        note.className = 'result-note';
+        const correctBtn = document.getElementById(`ws${wsNum}q${qi}o${item.correct}`);
+        if (selected === -1) {
+          if (correctBtn) correctBtn.classList.add('reveal');
+          note.textContent = `No answer selected. The answer is ${LETTERS[item.correct]}.`;
+          note.classList.add('show', 'err');
+          return;
+        }
+        if (selected === item.correct) {
+          card.classList.add('correct');
+          document.getElementById(`ws${wsNum}q${qi}o${selected}`).classList.replace('selected', 'correct');
+          note.textContent = `✓ Correct! ${item.note}`;
+          note.classList.add('show', 'ok');
+          correct++;
+        } else {
+          card.classList.add('wrong');
+          document.getElementById(`ws${wsNum}q${qi}o${selected}`).classList.replace('selected', 'wrong');
+          if (correctBtn) correctBtn.classList.add('reveal');
+          note.textContent = `✗ The correct answer is ${LETTERS[item.correct]}. ${item.note}`;
+          note.classList.add('show', 'err');
+        }
+      });
+      const scoreEl = document.getElementById(`score${wsNum}`);
+      const pct = Math.round(100 * correct / data.length);
+      scoreEl.textContent = `${correct} / ${data.length} correct (${pct}%)`;
+      scoreEl.className = 'ws-score' + (pct >= 80 ? ' good' : '');
+    }
+
+    function resetWS(wsNum) {
+      const datasets   = { 1: WS1, 2: WS2, 3: WS3, 4: WS4 };
+      const containers = { 1: 'ws1', 2: 'ws2', 3: 'ws3', 4: 'ws4' };
+      document.getElementById(`score${wsNum}`).textContent = '';
+      renderWS(wsNum, datasets[wsNum], document.getElementById(containers[wsNum]));
+    }
+
+    function resetAll() { [1,2,3,4].forEach(resetWS); }
+
+    renderWS(1, WS1, document.getElementById('ws1'));
+    renderWS(2, WS2, document.getElementById('ws2'));
+    renderWS(3, WS3, document.getElementById('ws3'));
+    renderWS(4, WS4, document.getElementById('ws4'));
+  </script>
+
+</body>
+</html>
