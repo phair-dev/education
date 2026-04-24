@@ -357,14 +357,19 @@
         return { ...f, type, answer };
       });
       document.getElementById('ws3').innerHTML = ws3Data.map((p, i) => {
-        const label = p.type === 'quotient' ? `${p.product} ÷ ${p.b} =`
-                    : p.type === 'dividend' ? `___ ÷ ${p.b} = ${p.a}`
-                    :                         `${p.product} ÷ ___ = ${p.a}`;
+        const inp = `<input type="number" id="ws3i${i}" min="0" max="144" placeholder="?"
+          onkeydown="if(event.key==='Enter') checkAll(3)">`;
+        let inner;
+        if (p.type === 'quotient') {
+          inner = `<span>${p.product} ÷ ${p.b} =</span>${inp}`;
+        } else if (p.type === 'dividend') {
+          inner = `${inp}<span>÷ ${p.b} = ${p.a}</span>`;
+        } else {
+          inner = `<span>${p.product} ÷</span>${inp}<span>= ${p.a}</span>`;
+        }
         return `
           <div class="ws-problem" id="ws3p${i}">
-            <span style="font-size:0.92rem;">${label}</span>
-            <input type="number" id="ws3i${i}" min="0" max="144" placeholder="?"
-              onkeydown="if(event.key==='Enter') checkAll(3)">
+            ${inner}
             <span class="check-icon" id="ws3c${i}"></span>
             <span class="correct-ans" id="ws3a${i}" style="display:none"></span>
           </div>
